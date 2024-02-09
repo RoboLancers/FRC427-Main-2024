@@ -17,7 +17,7 @@ public class GoToAngle extends Command {
     }
 
     public void initialize() {
-        m_arm.setControlType(ArmControlType.PID);
+        m_arm.setControlType(ArmControlType.TRAPEZOID);
     }
 
     public void execute() {

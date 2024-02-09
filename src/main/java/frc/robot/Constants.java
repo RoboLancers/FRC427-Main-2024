@@ -11,6 +11,8 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.util.Color;
 import frc.robot.subsystems.drivetrain.SwerveModuleConfig;
@@ -192,7 +194,7 @@ public final class Constants {
 
     // velocity = position / 60
     public static final double kVelocityConversionFactor = 360 / 60.0; 
-    public static final double kTolerance = 0;
+    public static final double kTolerance = 3;
 
     public static final double kGroundPosition = 0;
     public static final double kTravelPosition = 20;
@@ -206,6 +208,10 @@ public final class Constants {
     public static final double kP = 0;
     public static final double kI = 0;
     public static final double kD = 0;
+
+    // motion profile
+    public static final double kMaxArmVelocity = 0;
+    public static final double kMaxArmAcceleration = 0; 
 
     // custom feedforward
     // https://www.desmos.com/calculator/3mcdsjeubz

@@ -8,7 +8,8 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.SparkAbsoluteEncoder.Type;
 import edu.wpi.first.math.controller.ArmFeedforward;
-import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  
@@ -33,15 +34,13 @@ public class Arm extends SubsystemBase {
 
     private AbsoluteEncoder m_armEncoderRight = m_armMotorRight.getAbsoluteEncoder(Type.kDutyCycle);
     
-    private PIDController m_armPIDController = new PIDController(Constants.ArmConstants.kP, Constants.ArmConstants.kI, Constants.ArmConstants.kD);
-    
+    private ProfiledPIDController m_armProfiledPIDController = new ProfiledPIDController(
+        Constants.ArmConstants.kP, Constants.ArmConstants.kI, Constants.ArmConstants.kD, 
+        new TrapezoidProfile.Constraints(Constants.ArmConstants.kMaxArmVelocity, Constants.ArmConstants.kMaxArmAcceleration));
+
     public ArmFeedforward m_armFeedforward = new ArmFeedforward(Constants.ArmConstants.kS, Constants.ArmConstants.kG, Constants.ArmConstants.kV, Constants.ArmConstants.kA);
 
-    private ArmControlType m_ArmControlType = Arm.ArmControlType.PID;
-
-    // custom arm feedforward with gas springs
-    // private double m_kG = Constants.ArmConstants.kGravityFF;
-    // private double m_kS = Constants.ArmConstants.kSpringFF;
+    private ArmControlType m_ArmControlType = Arm.ArmControlType.TRAPEZOID;
 
     private Arm() {
         setupMotors();
@@ -60,7 +59,7 @@ public class Arm extends SubsystemBase {
         m_armEncoderRight.setVelocityConversionFactor(Constants.ArmConstants.kVelocityConversionFactor);
         
         // position error on which it is tolerable
-        m_armPIDController.setTolerance(Constants.ArmConstants.kTolerance);
+        m_armProfiledPIDController.setTolerance(Constants.ArmConstants.kTolerance);
         
         // left arm motor would follow right arm  motor's voltage intake 
         m_armMotorLeft.follow(m_armMotorRight);
@@ -71,17 +70,12 @@ public class Arm extends SubsystemBase {
         
         double impendingVelocity = 0; 
 
-        if (m_ArmControlType == ArmControlType.PID) {
+        if (m_ArmControlType == ArmControlType.TRAPEZOID) {
 
-            impendingVelocity = m_armPIDController.calculate(getAngle(), m_targetPosition) 
+            impendingVelocity = m_armProfiledPIDController.calculate(getAngle(), m_targetPosition) 
                                 + m_armFeedforward.calculate(Math.toRadians(getAngle()), 0);
-            
-            // custom arm feedforward
-            // impendingVelocity =  m_armPIDController.calculate(m_armEncoderRight.getPosition(), m_targetPosition) 
-            //                  + m_kG * Math.cos(Math.toRadians(m_armEncoderRight.getPosition()))
-            //                  + m_kS;
         }
-        
+            
         // velocity controlled manually
         else if (m_ArmControlType == ArmControlType.MANUAL) {
             impendingVelocity = m_manualVelocity;
@@ -120,7 +114,11 @@ public class Arm extends SubsystemBase {
     // }
 
     public double getError() {
-        return m_armPIDController.getPositionError();
+        return m_armProfiledPIDController.getPositionError();
+    }
+
+    public double getVelocityError() {
+        return m_armProfiledPIDController.getVelocityError();
     }
 
     public void goToAngle(double angle) {
@@ -137,7 +135,7 @@ public class Arm extends SubsystemBase {
     }
 
     public boolean isAtAngle() {
-        return m_armPIDController.atSetpoint();
+        return m_armProfiledPIDController.atSetpoint();
         
     }
 
@@ -146,7 +144,7 @@ public class Arm extends SubsystemBase {
     }
 
     public void setPID(double p, double i, double d) {
-        this.m_armPIDController.setPID(p, i, d);
+        this.m_armProfiledPIDController.setPID(p, i, d);
     }
 
     public ArmControlState getArmControlState() {
@@ -169,7 +167,8 @@ public class Arm extends SubsystemBase {
 
     public enum ArmControlType {
         MANUAL, 
-        PID
+        PID, 
+        TRAPEZOID
     }
 
     public enum ArmControlState {
@@ -185,7 +184,8 @@ public class Arm extends SubsystemBase {
     public void doSendables() {
         SmartDashboard.putNumber("Arm Position (deg)", getAngle()); 
         SmartDashboard.putNumber("Arm Velocity (deg/sec)", m_armEncoderRight.getVelocity());
-        SmartDashboard.putNumber("Arm Error (deg)", getError());
+        SmartDashboard.putNumber("Arm Position Error (deg)", getError());
+        SmartDashboard.putNumber("Arm Velocity Error (deg/sec)", getVelocityError());
         SmartDashboard.putBoolean("Is Arm At Set Point", isAtAngle());
         SmartDashboard.putBoolean("Arm Limit Switch", m_limitSwitch.get());
         SmartDashboard.putString("Arm Control Type", m_ArmControlType.toString());

@@ -16,7 +16,7 @@ public class TunePIDGoToAngle extends Command {
     }
 
     public void initialize() {
-        m_arm.setControlType(ArmControlType.PID);
+        m_arm.setControlType(ArmControlType.TRAPEZOID);
     }
 
     public void execute() {
@@ -29,8 +29,6 @@ public class TunePIDGoToAngle extends Command {
             IOUtils.get("Arm kG", Constants.ArmConstants.kG), 
             IOUtils.get("Arm kV", Constants.ArmConstants.kV), 
             IOUtils.get("Arm kA", Constants.ArmConstants.kA));
-        // m_arm.setKG(IOUtils.get("Arm kG", Constants.ArmConstants.kGravityFF));
-        // m_arm.setKS(IOUtils.get("Arm kS", Constants.ArmConstants.kSpringFF));
 
         m_arm.goToAngle(IOUtils.get("Arm Angle"));
     }
