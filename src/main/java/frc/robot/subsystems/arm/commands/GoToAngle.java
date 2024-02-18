@@ -17,7 +17,7 @@ public class GoToAngle extends Command {
     }
 
     public void initialize() {
-        m_arm.setControlType(ArmControlType.PID);
+        m_arm.setControlType(ArmControlType.TRAPEZOID);
     }
 
     public void execute() {
@@ -27,7 +27,7 @@ public class GoToAngle extends Command {
 
     public boolean isFinished() {
         // confirmation that arm is at angle
-        return m_arm.isAtAngle(); 
+        return m_arm.atGoal(); 
     }
 
     public void end(boolean interrupted) {
