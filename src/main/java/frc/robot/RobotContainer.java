@@ -176,7 +176,7 @@ public class RobotContainer {
 
       // intake from ground
    
-       manipulatorController.leftTrigger()
+       driverController.a()
       .whileTrue(AutomationCommands.updatedShootFromAnywhere(driverController)); 
 
       manipulatorController.rightTrigger()

@@ -1,5 +1,8 @@
 package frc.robot.subsystems.drivetrain;
 
+import java.util.Optional;
+
+import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.MathUtil;
@@ -15,7 +18,9 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.Matrix;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -65,7 +70,7 @@ public class Drivetrain extends SubsystemBase {
     this.gyro.zeroYaw();
 
     // create the pose estimator
-    this.odometry = new SwerveDrivePoseEstimator(Constants.DrivetrainConstants.kDriveKinematics, getRotation(), getPositions(), new Pose2d()); 
+    this.odometry = new SwerveDrivePoseEstimator(Constants.DrivetrainConstants.kDriveKinematics, getGyroRotation(), getPositions(), new Pose2d()); 
     
   }
 
@@ -125,9 +130,12 @@ public class Drivetrain extends SubsystemBase {
   private double rotationPerSecond = 0; 
 
   public void swerveDrive(ChassisSpeeds speeds) {
+    Optional<Alliance> opt = DriverStation.getAlliance(); 
+    if (!opt.isPresent()) return; 
+    Alliance alliance = opt.get(); 
     ChassisSpeeds robotRelative = ChassisSpeeds.fromFieldRelativeSpeeds(
       speeds, 
-      getRotation()
+      alliance == Alliance.Blue ? getRotation() : getRotation().plus(Rotation2d.fromDegrees(180))
     ); 
 
     // correct for drift in the chassis
@@ -170,7 +178,7 @@ public class Drivetrain extends SubsystemBase {
   private double lastTurnedTheta = 0; 
 
   public void resetLastTurnedTheta() {
-    lastTurnedTheta = this.getYaw(); 
+    lastTurnedTheta = this.getRotation().getDegrees();  
   }
 
   public void swerveDriveFieldRel(double xMetersPerSecond, double yMetersPerSecond, double thetaDegrees, boolean turn) {
@@ -185,7 +193,7 @@ public class Drivetrain extends SubsystemBase {
     // or to not commit to the angle
      if (turn
       // || gyro.getRate() > 0.25
-      ) lastTurnedTheta = this.getYaw(); 
+      ) lastTurnedTheta = this.getRotation().getDegrees(); 
      double rotSpeed = rotationController.calculate(getRotation().getDegrees(), turn ? thetaDegrees : lastTurnedTheta); 
      
 
@@ -246,17 +254,21 @@ public class Drivetrain extends SubsystemBase {
 
 
   public Rotation2d getRotation() {
-    return Rotation2d.fromRadians(m_Rotation); 
+    return odometry.getEstimatedPosition().getRotation(); 
+  }
+
+  public void setRotation(Rotation2d rotation) {
+    resetOdometry(new Pose2d(getPose().getX(), getPose().getY(), rotation));
   }
 
   // zeros the current heading of the robot
   public void zeroHeading() {
-    gyro.zeroYaw();
+    setRotation(new Rotation2d());
   }
 
   // gets the raw heading of the robot
-  public double getYaw() {
-      return m_Rotation;
+  public Rotation2d getGyroRotation() {
+      return Rotation2d.fromRadians(m_Rotation);
   }
 
   // Returns the rate at which the robot is turning in degrees per second.
@@ -266,7 +278,7 @@ public class Drivetrain extends SubsystemBase {
 
   // reset the current pose of the robot to a set pose
   public void resetOdometry(Pose2d pose) {
-    odometry.resetPosition(gyro.getRotation2d(), getPositions(), pose);
+    odometry.resetPosition(getGyroRotation(), getPositions(), pose);
   }
 
   /**
