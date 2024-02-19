@@ -119,12 +119,12 @@ public class Drivetrain extends SubsystemBase {
    * @param rotationRadPerSecond the speed to rotate at in radians per second
    * 
    */
-  public void swerveDrive(double xMetersPerSecond, double yMetersPerSecond, double rotationRadPerSecond) {
+  public void swerveDrive(double xMetersPerSecond, double yMetersPerSecond, double rotationRadPerSecond, boolean flipAlliance) {
     swerveDrive(new ChassisSpeeds(
       xMetersPerSecond, 
       yMetersPerSecond, 
       rotationRadPerSecond
-    ));
+    ), flipAlliance);
   }
 
   public void swerveDriveRobotCentric(ChassisState state) {
@@ -151,13 +151,13 @@ public class Drivetrain extends SubsystemBase {
 
   private double rotationPerSecond = 0; 
 
-  public void swerveDrive(ChassisSpeeds speeds) {
+  public void swerveDrive(ChassisSpeeds speeds, boolean flipAlliance) {
     Optional<Alliance> opt = DriverStation.getAlliance(); 
     if (!opt.isPresent()) return; 
     Alliance alliance = opt.get(); 
     ChassisSpeeds robotRelative = ChassisSpeeds.fromFieldRelativeSpeeds(
       speeds, 
-      alliance == Alliance.Blue ? getRotation() : getRotation().plus(Rotation2d.fromDegrees(180))
+      alliance == Alliance.Red && flipAlliance ? getRotation().plus(Rotation2d.fromDegrees(180)) : getRotation()
     ); 
 
     // correct for drift in the chassis
@@ -207,7 +207,7 @@ public class Drivetrain extends SubsystemBase {
     lastTurnedTheta = this.getRotation().getDegrees();  
   }
 
-  public void swerveDriveFieldRel(double xMetersPerSecond, double yMetersPerSecond, double thetaDegrees, boolean turn) {
+  public void swerveDriveFieldRel(double xMetersPerSecond, double yMetersPerSecond, double thetaDegrees, boolean turn, boolean flipAlliance) {
     
    // if (turn) lastTurnedTheta = thetaDegrees; 
     
@@ -225,11 +225,11 @@ public class Drivetrain extends SubsystemBase {
 
     rotSpeed = MathUtil.clamp(rotSpeed, -Constants.DrivetrainConstants.kMaxRotationRadPerSecond, Constants.DrivetrainConstants.kMaxRotationRadPerSecond); 
 
-    swerveDrive(xMetersPerSecond, yMetersPerSecond, rotSpeed);
+    swerveDrive(xMetersPerSecond, yMetersPerSecond, rotSpeed, flipAlliance);
   }
 
-  public void swerveDriveFieldRel(ChassisState state) {
-    swerveDriveFieldRel(state.vxMetersPerSecond, state.vyMetersPerSecond, Math.toDegrees(state.omegaRadians), state.turn);
+  public void swerveDriveFieldRel(ChassisState state, boolean flipAlliance) {
+    swerveDriveFieldRel(state.vxMetersPerSecond, state.vyMetersPerSecond, Math.toDegrees(state.omegaRadians), state.turn, flipAlliance);
   }
 
   // command the swerve modules to the intended states

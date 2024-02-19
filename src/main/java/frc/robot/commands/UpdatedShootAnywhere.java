@@ -60,11 +60,9 @@ public class UpdatedShootAnywhere extends Command {
         double angleToTurnArm = Constants.Vision.distanceToArmAngle.apply(distance);
         arm.goToAngle(angleToTurnArm);
         ChassisState speeds = driverController.getDesiredChassisState(); 
-        SmartDashboard.putNumber("sa angle", finalAngle * 180 / Math.PI);
-        System.out.println(currentPose);
         speeds.omegaRadians = finalAngle;
         speeds.turn = true; 
-        drivetrain.swerveDriveFieldRel(speeds);
+        drivetrain.swerveDriveFieldRel(speeds, true);
     }
 
     public boolean isFinished() {
@@ -93,7 +91,6 @@ public class UpdatedShootAnywhere extends Command {
                 new SetSuckerIntakeSpeed(intake, 0), 
                 new SetShooterSpeed(intake, 0)
             ).finallyDo(() -> {
-                System.out.println("arm travel");
                 arm.goToAngle(Constants.ArmConstants.kTravelPosition);
             }); 
             CommandScheduler.getInstance().schedule(command);

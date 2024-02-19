@@ -3,8 +3,11 @@ package frc.robot.commands;
 import java.util.Optional;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Twist2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -26,6 +29,7 @@ public class GeneralizedHangRoutine extends Command {
     public Arm arm;
     public Intake intake;
     private double angleToTurn; 
+    private boolean stop = false; 
 
     public GeneralizedHangRoutine(DriverController driverController, Drivetrain drivetrain, Arm arm, Intake intake) {
         this.arm = arm;
@@ -37,7 +41,13 @@ public class GeneralizedHangRoutine extends Command {
     }
 
     public void initialize() {
-        this.angleToTurn = getAngle(drivetrain.getPose()); 
+        this.stop = false; 
+        Optional<Double> angle = getAngle(drivetrain.getPose());
+        if (angle.isEmpty()) {
+            stop = true; 
+        } else {
+            this.angleToTurn = angle.get(); 
+        }
         arm.goToAngle(90);
     }
 
@@ -45,11 +55,18 @@ public class GeneralizedHangRoutine extends Command {
         ChassisState speeds = driverController.getDesiredChassisState(); 
         speeds.omegaRadians = Math.toRadians(this.angleToTurn);
         speeds.turn = true; 
-        drivetrain.swerveDriveRobotCentric(speeds);
+
+        double newVx = speeds.vxMetersPerSecond * Math.cos(speeds.omegaRadians) - speeds.vyMetersPerSecond * Math.sin(speeds.omegaRadians); 
+        double newVy = speeds.vxMetersPerSecond * Math.sin(speeds.omegaRadians) + speeds.vyMetersPerSecond * Math.cos(speeds.omegaRadians); 
+
+        speeds.vxMetersPerSecond = newVx; 
+        speeds.vyMetersPerSecond = newVy;
+
+        drivetrain.swerveDriveFieldRel(speeds, false);
     }
 
     public boolean isFinished() {
-        return false;
+        return stop;
     }
 
     public void end(boolean interrupted) {
@@ -68,7 +85,7 @@ public class GeneralizedHangRoutine extends Command {
 
     // write a method that returns an angle based on the position it's in 
     // if the robot is in allaicne red but the robot is in a blue thingy, then just return 0 or somtehing
-    public static double getAngle(Pose2d robotPose) {
+    public static Optional<Double> getAngle(Pose2d robotPose) {
         Alliance alliance = getTargetPose();
 
         if (alliance == Alliance.Blue) {
@@ -78,7 +95,7 @@ public class GeneralizedHangRoutine extends Command {
                 Constants.AutoHang.blueTopRight1,
                 Constants.AutoHang.blueTopLeft1
             )) {
-                return -60;
+                return Optional.of(-60.0);
             }
             else if (isPoseInRectangle(new OrderedPair(robotPose.getX(), robotPose.getY()), 
                 Constants.AutoHang.blueBottomLeft2,
@@ -86,7 +103,7 @@ public class GeneralizedHangRoutine extends Command {
                 Constants.AutoHang.blueTopRight2,
                 Constants.AutoHang.blueTopLeft2
             )) {
-                return 180;
+                return Optional.of(180.0);
             }
             else if (isPoseInRectangle(new OrderedPair(robotPose.getX(), robotPose.getY()), 
                 Constants.AutoHang.blueBottomLeft3,
@@ -94,7 +111,7 @@ public class GeneralizedHangRoutine extends Command {
                 Constants.AutoHang.blueTopRight3,
                 Constants.AutoHang.blueTopLeft3
             )) {
-                return 60;
+                return Optional.of(60.0);
             }
         }
         if (alliance == Alliance.Red) {
@@ -104,7 +121,7 @@ public class GeneralizedHangRoutine extends Command {
                 Constants.AutoHang.redTopRight1,
                 Constants.AutoHang.redTopLeft1
             )) {
-                return -120;
+                return Optional.of(-120.0);
             }
             else if (isPoseInRectangle(new OrderedPair(robotPose.getX(), robotPose.getY()), 
                 Constants.AutoHang.redBottomLeft2,
@@ -112,7 +129,7 @@ public class GeneralizedHangRoutine extends Command {
                 Constants.AutoHang.redTopRight2,
                 Constants.AutoHang.redTopLeft2
             )) {
-                return 0;
+                return Optional.of(0.0);
             }
             else if (isPoseInRectangle(new OrderedPair(robotPose.getX(), robotPose.getY()), 
                 Constants.AutoHang.redBottomLeft3,
@@ -120,11 +137,11 @@ public class GeneralizedHangRoutine extends Command {
                 Constants.AutoHang.redTopRight3,
                 Constants.AutoHang.redTopLeft3
             )) {
-                return 120;
+                return Optional.of(120.0);
             }
         }
 
-        return 0; 
+        return Optional.empty();
     }
 
     public static Alliance getTargetPose() {

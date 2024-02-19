@@ -66,7 +66,7 @@ public class TurnToAngle extends Command {
             // SmartDashboard.putNumber("angle velo", pidController.getVelocityError()); 
 
             // drive robot with the desired output
-            drivetrain.swerveDrive(0, 0, output);
+            drivetrain.swerveDrive(0, 0, output, false);
         }
     
         @Override
