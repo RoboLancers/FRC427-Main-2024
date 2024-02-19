@@ -104,4 +104,8 @@ public class AutomationCommands {
       Led.getInstance().isShooting = false; 
     }); 
   }
+
+  public static Command hangAssist(DriverController controller) {
+    return new GeneralizedHangRoutine(controller, Drivetrain.getInstance(), Arm.getInstance(), Intake.getInstance()); 
+  }
 }

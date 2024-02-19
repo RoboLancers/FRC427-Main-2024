@@ -24,6 +24,7 @@ import frc.robot.subsystems.leds.patterns.RainbowPattern;
 import frc.robot.subsystems.leds.patterns.SineLEDPattern;
 import frc.robot.subsystems.leds.patterns.SolidLEDPattern;
 import frc.robot.subsystems.leds.patterns.TestColorPattern;
+import frc.robot.util.quad.OrderedPair;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -188,10 +189,17 @@ public final class Constants {
     public static final float kForwardSoftLimit = 100;
     public static final double kReverseSoftLimit = 0; 
 
-    public static final double kPositionConversionFactor = 360;
+    public static final double kAbsPositionConversionFactor = 360;
 
     // velocity = position / 60
-    public static final double kVelocityConversionFactor = 360 / 60.0; 
+    public static final double kAbsVelocityConversionFactor = kAbsPositionConversionFactor / 60.0; 
+
+    public static final double kPositionConversionFactor = 360.0 / (5 * 5 * 4 * 5);
+
+    // velocity = position / 60
+    public static final double kVelocityConversionFactor = kPositionConversionFactor / 60; 
+
+
     public static final double kTolerance = 2;
 
     public static final double kGroundPosition = 0;
@@ -283,17 +291,10 @@ public final class Constants {
     public static final class Patterns {
       public static final LEDPattern kDefault = new SolidLEDPattern(LEDs.kDefaultColor);
       public static final LEDPattern kDisabled = new FadeLEDPattern(4, LEDs.kDefaultColor, kGold);
-      public static final LEDPattern kCube = new SolidLEDPattern(Color.kPurple);
-      public static final LEDPattern kCone = new SolidLEDPattern(kGold);
-      public static final LEDPattern kDead = new MorseCodePattern(Color.kRed, kCobaltBlue, "dead");
-      public static final LEDPattern kDeadAlternate = new FadeLEDPattern(1, Color.kRed, Color.kBlack);
-      public static final LEDPattern kBalanceFinished = new RainbowPattern(0.5);
       public static final LEDPattern kAllianceRed = new SolidLEDPattern(Color.kRed);
       public static final LEDPattern kAllianceBlue = new SolidLEDPattern(Color.kBlue);
       public static final LEDPattern kEnabled = new SineLEDPattern(1, kGold, kCobaltBlue, 8);
-      public static final LEDPattern kIdle= new FadeLEDPattern(2, Color.kRed, kGold);
       public static final LEDPattern kMoving = new FadeLEDPattern(1,kGold, Color.kWhite);
-      public static final LEDPattern kFail = new FadeLEDPattern(1,Color.kRed, kGold);
       public static final LEDPattern kIntake = new FadeLEDPattern(1,kCobaltBlue, Color.kGreen);
       public static final LEDPattern kMovingToNote = LEDPattern.kEmpty; // TODO: add a pattern for this
       public static final LEDPattern kShootAnywhere = new SolidLEDPattern(kCobaltBlue);
@@ -322,37 +323,37 @@ public final class Constants {
     public static final Pose2d ampRed = new Pose2d(14.62, 7.75, Rotation2d.fromDegrees(-90));
   }
   public static final class AutoHang {
-    public static final Pose2d blueTopLeft1 = new Pose2d(2.05, 5.93, Rotation2d.fromDegrees(0));
-    public static final Pose2d blueBottomRight1 = new Pose2d(5.48, 5.55, Rotation2d.fromDegrees(0));
-    public static final Pose2d blueTopRight1 = new Pose2d(4.56, 6.77, Rotation2d.fromDegrees(0));
-    public static final Pose2d blueBottomLeft1 = new Pose2d(3.15, 4.50, Rotation2d.fromDegrees(0));
+    public static final OrderedPair blueTopLeft1 = new OrderedPair(2.05, 5.93);
+    public static final OrderedPair blueBottomRight1 = new OrderedPair(5.48, 5.55);
+    public static final OrderedPair blueTopRight1 = new OrderedPair(4.56, 6.77);
+    public static final OrderedPair blueBottomLeft1 = new OrderedPair(3.15, 4.50);
 
-    public static final Pose2d blueTopLeft2 = new Pose2d(6.20, 5.50, Rotation2d.fromDegrees(0));
-    public static final Pose2d blueBottomRight2 = new Pose2d(7.90, 3.33, Rotation2d.fromDegrees(0));
-    public static final Pose2d blueTopRight2 = new Pose2d(7.90, 5.50, Rotation2d.fromDegrees(0));
-    public static final Pose2d blueBottomLeft2 = new Pose2d(6.20, 3.33, Rotation2d.fromDegrees(0));
-
-
-    public static final Pose2d blueTopLeft3 = new Pose2d(3.23, 3.92, Rotation2d.fromDegrees(0));
-    public static final Pose2d blueBottomRight3 = new Pose2d(4.40, 1.56, Rotation2d.fromDegrees(0));
-    public static final Pose2d blueTopRight3 = new Pose2d(5.32, 2.66, Rotation2d.fromDegrees(0));
-    public static final Pose2d blueBottomLeft3 = new Pose2d(2.21, 2.79, Rotation2d.fromDegrees(0));
-
-    public static final Pose2d redTopRight1 = new Pose2d(14.61, 5.93, Rotation2d.fromDegrees(0));
-    public static final Pose2d redBottomRight1 = new Pose2d(13.30, 4.30, Rotation2d.fromDegrees(0));
-    public static final Pose2d redTopLeft1 = new Pose2d(11.99, 6.77, Rotation2d.fromDegrees(0));
-    public static final Pose2d redBottomLeft1 = new Pose2d(11.22, 5.55, Rotation2d.fromDegrees(0));
-
-    public static final Pose2d redTopLeft2 = new Pose2d(9.20, 5.31, Rotation2d.fromDegrees(0));
-    public static final Pose2d redBottomRight2 = new Pose2d(10.70, 2.80, Rotation2d.fromDegrees(0));
-    public static final Pose2d redTopRight2 = new Pose2d(10.70, 5.31, Rotation2d.fromDegrees(0));
-    public static final Pose2d redBottomLeft2 = new Pose2d(9.20, 2.80, Rotation2d.fromDegrees(0));
+    public static final OrderedPair blueTopLeft2 = new OrderedPair(6.20, 5.50);
+    public static final OrderedPair blueBottomRight2 = new OrderedPair(7.90, 3.33);
+    public static final OrderedPair blueTopRight2 = new OrderedPair(7.90, 5.50);
+    public static final OrderedPair blueBottomLeft2 = new OrderedPair(6.20, 3.33);
 
 
-    public static final Pose2d redTopLeft3 = new Pose2d(11.21, 2.55, Rotation2d.fromDegrees(0));
-    public static final Pose2d redBottomRight3 = new Pose2d(14.26, 2.55, Rotation2d.fromDegrees(0));
-    public static final Pose2d redTopRight3 = new Pose2d(13.35, 3.66, Rotation2d.fromDegrees(0));
-    public static final Pose2d redBottomLeft3 = new Pose2d(12.32, 1.22, Rotation2d.fromDegrees(0));
+    public static final OrderedPair blueTopLeft3 = new OrderedPair(3.23, 3.92);
+    public static final OrderedPair blueBottomRight3 = new OrderedPair(4.40, 1.56);
+    public static final OrderedPair blueTopRight3 = new OrderedPair(5.32, 2.66);
+    public static final OrderedPair blueBottomLeft3 = new OrderedPair(2.21, 2.79);
+
+    public static final OrderedPair redTopRight1 = new OrderedPair(14.61, 5.93);
+    public static final OrderedPair redBottomRight1 = new OrderedPair(13.30, 4.30);
+    public static final OrderedPair redTopLeft1 = new OrderedPair(11.99, 6.77);
+    public static final OrderedPair redBottomLeft1 = new OrderedPair(11.22, 5.55);
+
+    public static final OrderedPair redTopLeft2 = new OrderedPair(9.20, 5.31);
+    public static final OrderedPair redBottomRight2 = new OrderedPair(10.70, 2.80);
+    public static final OrderedPair redTopRight2 = new OrderedPair(10.70, 5.31);
+    public static final OrderedPair redBottomLeft2 = new OrderedPair(9.20, 2.80);
+
+
+    public static final OrderedPair redTopLeft3 = new OrderedPair(11.21, 2.55);
+    public static final OrderedPair redBottomRight3 = new OrderedPair(14.26, 2.55);
+    public static final OrderedPair redTopRight3 = new OrderedPair(13.35, 3.66);
+    public static final OrderedPair redBottomLeft3 = new OrderedPair(12.32, 1.22);
   }
   
   

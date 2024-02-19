@@ -146,6 +146,8 @@ public class RobotContainer {
   //  driverController.x()
   //  .whileTrue(AutomationCommands.pathFindToGamePiece(driverController)); // auto navigate to note
 
+    driverController.x().whileTrue(AutomationCommands.hangAssist(driverController)); 
+
     // --- Intake --- 
 
     // outtake
