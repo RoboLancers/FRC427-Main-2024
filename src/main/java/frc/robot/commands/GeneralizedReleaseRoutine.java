@@ -67,7 +67,7 @@ public class GeneralizedReleaseRoutine extends Command {
         ChassisState speeds = driverController.getDesiredChassisState(); 
         speeds.omegaRadians = finalAngle;
         speeds.turn = true;
-        drivetrain.swerveDriveFieldRel(speeds, false);
+        drivetrain.swerveDriveFieldRel(speeds, true);
     }
 
     // sees if has gone over time

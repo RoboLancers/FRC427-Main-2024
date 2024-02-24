@@ -92,13 +92,16 @@ public class RobotContainer {
    driverController.y()
    .whileTrue(AutomationCommands.pathFindToAmpAndScore()); // move to amp & score
 
-   driverController.b()
-   .whileTrue(AutomationCommands.pathFindToSpeakerAndScore()); // move to speaker & score
+  //  driverController.b()
+  //  .whileTrue(AutomationCommands.pathFindToSpeakerAndScore()); // move to speaker & score
 
   //  driverController.x()
   //  .whileTrue(AutomationCommands.pathFindToGamePiece(driverController)); // auto navigate to note
 
-    driverController.x().whileTrue(AutomationCommands.hangAssist(driverController)); 
+    driverController.x().whileTrue(AutomationCommands.generalizedHangCommand(driverController));
+
+    
+    driverController.b().whileTrue(AutomationCommands.pathFindToGamePiece(driverController)); 
 
     // --- Intake --- 
 
