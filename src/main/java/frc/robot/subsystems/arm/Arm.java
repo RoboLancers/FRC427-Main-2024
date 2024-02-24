@@ -9,7 +9,9 @@ import frc.robot.util.IOUtils;
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.CANSparkLowLevel.PeriodicFrame;
 import com.revrobotics.SparkAbsoluteEncoder.Type;
 
 import edu.wpi.first.math.MathUtil;
@@ -50,28 +52,39 @@ public class Arm extends SubsystemBase {
 
     private ArmControlType m_ArmControlType = Arm.ArmControlType.PID;
 
-    // custom arm feedforward with gas springs
-    // private double m_kG = Constants.ArmConstants.kGravityFF;
-    // private double m_kS = Constants.ArmConstants.kSpringFF;
 
     StructPublisher<Pose3d> publisher = NetworkTableInstance.getDefault()
     .getStructTopic("Arm Pose", Pose3d.struct).publish();
 
     private Arm() {
+        setupEncoders();
+        // setupControllers();
         setupMotors();
     }
 
-    // motor and encoder config
+    // motor config
     public void setupMotors() {
-        m_armMotorRight.setInverted(false);
-        m_armMotorLeft.setInverted(true);
+
+        // m_armMotorRight.setIdleMode(IdleMode.kBrake);
+        // m_armMotorLeft.setIdleMode(IdleMode.kBrake);
+
+        m_armMotorRight.setInverted(Constants.ArmConstants.kRightMotorInverted);
         
         m_armMotorRight.setSmartCurrentLimit(Constants.ArmConstants.kMotorCurrentLimit);
         m_armMotorLeft.setSmartCurrentLimit(Constants.ArmConstants.kMotorCurrentLimit);
+        
+        // left arm motor would follow right arm  motor's voltage intake 
+        m_armMotorLeft.follow(m_armMotorRight, Constants.ArmConstants.kLeftMotorInverted);
 
+        // m_armMotorLeft.burnFlash(); 
+        // m_armMotorRight.burnFlash();
+    }
+
+    //encoder config
+    public void setupEncoders() {
         // conversion factors
-        m_armMotorRight.setPositionConversionFactor(Constants.ArmConstants.kPositionConversionFactor);
-        m_armMotorRight.setVelocityConversionFactor(Constants.ArmConstants.kVelocityConversionFactor);
+        // m_armMotorRight.setPositionConversionFactor(Constants.ArmConstants.kPositionConversionFactor);
+        // m_armMotorRight.setVelocityConversionFactor(Constants.ArmConstants.kVelocityConversionFactor);
         
         // position error on which it is tolerable
     //    m_armPIDController.setTolerance(Constants.ArmConstants.kTolerance);
@@ -130,6 +143,7 @@ public class Arm extends SubsystemBase {
     }
 
     public boolean reverseSoftLimit() {
+        // return (getLimitSwitchValue() || getAngle() < Constants.ArmConstants.kReverseSoftLimit);
         return (getAngle() < Constants.ArmConstants.kReverseSoftLimit);
     }
 
@@ -219,7 +233,6 @@ public class Arm extends SubsystemBase {
         SmartDashboard.putNumber("Arm Velocity (deg/sec)", m_armMotorRight.getVelocity());
         SmartDashboard.putNumber("Arm Error (deg)", getError());
         SmartDashboard.putBoolean("Is Arm At Set Point", isAtAngle());
-        SmartDashboard.putBoolean("Arm Limit Switch", getLimitSwitchValue());
         SmartDashboard.putString("Arm Control Type", m_ArmControlType.toString());
         SmartDashboard.putString("Arm Control State", getArmControlState().toString());
         // SmartDashboard.putBoolean("left inverted", m_armMotorLeft.getInverted()); 

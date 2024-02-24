@@ -10,6 +10,7 @@ import com.ctre.phoenix6.signals.SensorDirectionValue;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import  edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.util.Color;
@@ -19,7 +20,6 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout.OriginPosition;
 import edu.wpi.first.apriltag.AprilTagFields;
 import frc.robot.subsystems.leds.patterns.FadeLEDPattern;
 import frc.robot.subsystems.leds.patterns.LEDPattern;
-import frc.robot.subsystems.leds.patterns.MorseCodePattern;
 import frc.robot.subsystems.leds.patterns.RainbowPattern;
 import frc.robot.subsystems.leds.patterns.SineLEDPattern;
 import frc.robot.subsystems.leds.patterns.SolidLEDPattern;
@@ -83,7 +83,7 @@ public final class Constants {
     public static double kMaxSpeedMetersPerSecond = 2.7; // max velocity (no turning) of robot; may tune to be a fraction of the attainable module speed
     public static double kMaxSlowSpeedMetersPerSecond = 1.0; 
     public static final double kMaxAccelerationMetersPerSecondSquared = kMaxSpeedMetersPerSecond / 0.2; // max acceleration of robot (accelerate to max speed in 1 second)
-    public static double kMaxRotationRadPerSecond = 3.14; // max rotation speed of the robot
+    public static double kMaxRotationRadPerSecond = 3.00; // max rotation speed of the robot
     public static final double kMaxSlowRotationRadPerSecond = Math.PI / 2; 
     public static final double kMaxRotationAccelerationRadPerSecondSquared = kMaxRotationRadPerSecond / 0.2; // max angular acceleration of robot
 
@@ -105,14 +105,13 @@ public final class Constants {
     public static final double kModuleTurn_D = 0.00032; 
 
     // turn in place PID for the whole robot
-    public static final double kTurn_P = 0.054; 
+    public static final double kTurn_P = 0.064; 
     public static final double kTurn_I = 0; 
     public static final double kTurn_D = 0.001; 
     public static final double kTurn_FF = 0; 
-    public static final double kTurnErrorThreshold = 2.0; 
+    public static final double kTurnErrorThreshold = 5.0; 
     public static final double kTurnVelocityThreshold = 0; 
 
-    // TODO: tune these but it should be fine
     // current limits for each motor
     public static final int kDriveCurrentLimit = 40; 
     public static final double kDriveRampRate = 0.25; 
@@ -130,7 +129,7 @@ public final class Constants {
     // translational PID of robot for trajectory use
     public static final double kDrive_P = 2.25; 
     public static final double kDrive_I = 0; 
-    public static final double kDrive_D = 0;
+    public static final double kDrive_D = 0.0001;
 
     // angular PID (same as turn pid)
     public static final double kOmega_P = 4; 
@@ -163,16 +162,16 @@ public final class Constants {
     public static final double kShootVelocityConversionFactor = 1; 
     public static final double kIntakeVelocityConversionFactor = 1; 
 
-    public static final int kBeamBreakId = 0;
+    public static final int kBeamBreakId = 2;
 
-    public static final double kSuckerIntakeSpeed = 0.5;
+    public static final double kSuckerIntakeSpeed = 0.6;
 
     public static final double kShootSpeed = 1; 
     public static final double kShootSuckerSpeed = 1; 
-    public static final double kShootRevTime = 0.5; 
+    public static final double kShootRevTime = 2; 
     public static final double kShootWaitTime = 0.5; 
 
-    public static final double kAmpOuttakeSpeed = 0.5;
+    public static final double kAmpOuttakeSpeed = 0.3;
     public static final int kSuckerManualSpeed = 0; 
   }
 
@@ -190,14 +189,13 @@ public final class Constants {
     public static final double kReverseSoftLimit = 0; 
 
     public static final double kAbsPositionConversionFactor = 360;
-
     // velocity = position / 60
     public static final double kAbsVelocityConversionFactor = kAbsPositionConversionFactor / 60.0; 
 
-    public static final double kPositionConversionFactor = 360.0 / (5 * 5 * 4 * 5);
 
+    public static final double kRelativePositionConversionFactor = 360.0 / (5 * 5 * 4 * 5);
     // velocity = position / 60
-    public static final double kVelocityConversionFactor = kPositionConversionFactor / 60; 
+    public static final double kRelativeVelocityConversionFactor = kRelativePositionConversionFactor / 60; 
 
 
     public static final double kTolerance = 2;
@@ -215,22 +213,17 @@ public final class Constants {
     public static final double kI = 0;
     public static final double kD = 0;
 
-    // custom feedforward
-    // https://www.desmos.com/calculator/3mcdsjeubz
-    // public static final double kGravityFF = 0;
-    // public static final double kSpringFF = 0;
-
      
     // calculate using reca.lc
+    // reduction: 500
     // CoM distance: 21.77 in
-    // Arm mass: 20.755 lbs
+    // Arm mass: 18 lbs
     
     public static final double kS = 0; 
-    public static final double kG = 0; // 0.79 V
+    public static final double kG = 0.014; // 0.79 V
     public static final double kV = 0; // 1.95 V*s/rad
     public static final double kA = 0; // 0.06 V*s^2/rad
-    
-
+  
   }
 
   public static class HangConstants {
@@ -249,13 +242,22 @@ public final class Constants {
     public static final float kReverseHangSoftLimit = 0;
 
     public static final double kHangSpeed = 0.25;
+
+    public static final double kP = 0;
+    public static final double kI = 0;
+    public static final double kD = 0;
+
+    public static final double kHangMaxUp = 10;
+    public static final double kHangInitial = 0;
+
+    public static final double kHangTolerance = 2;
   }
 
   public static class Vision {
     public static final double kTranslationStdDevCoefficient = 0.35;
     public static final double kRotationStdDevCoefficient = 1;
     public static final AprilTagFieldLayout kAprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField(); 
-    public static final double limelightZHeight = 0; // TODO: Fix this
+    public static final double limelightZHeight = 0; 
     public static final double kMaxAccuracyRange = 1000;
     public static final Pose2d kRedAllianceSpeaker = new Pose2d(16.5, 5.54, new Rotation2d());
     public static final Pose2d kBlueAllianceSpeaker = new Pose2d(0, 5.54, new Rotation2d());
@@ -263,9 +265,10 @@ public final class Constants {
     public static final double redShootRange = 10.71;
     public static final double shootAnywhereTimeout = 4;
     public static final double waitAfterShot = 1;
+    public static final double confidence = 60;
+    public static final Transform3d robotToCamera = new Transform3d();
 
-    // TODO: tune
-    public static final Function<Double, Double> distanceToArmAngle = (dist) -> 0.0; 
+    public static final Function<Double, Double> distanceToArmAngle = (dist) -> 5.82663 * Math.atan(3.94527 * dist - 7.66052) + 24.8349; 
 
     static {
       kAprilTagFieldLayout.setOrigin(OriginPosition.kBlueAllianceWallRightSide);
@@ -296,7 +299,7 @@ public final class Constants {
       public static final LEDPattern kEnabled = new SineLEDPattern(1, kGold, kCobaltBlue, 8);
       public static final LEDPattern kMoving = new FadeLEDPattern(1,kGold, Color.kWhite);
       public static final LEDPattern kIntake = new FadeLEDPattern(1,kCobaltBlue, Color.kGreen);
-      public static final LEDPattern kMovingToNote = LEDPattern.kEmpty; // TODO: add a pattern for this
+      public static final LEDPattern kMovingToNote = new RainbowPattern(1);
       public static final LEDPattern kShootAnywhere = new SolidLEDPattern(kCobaltBlue);
       public static final LEDPattern kArmMoving = new SolidLEDPattern(Color.kOrange);
       public static final LEDPattern kArmAtAmp = new SolidLEDPattern(Color.kPink);

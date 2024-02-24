@@ -24,6 +24,7 @@ public class IntakeFromGround extends Command {
     public void execute() {
         // runs repeatedly until the command is finished
         this.m_intake.intakeRing(Constants.IntakeConstants.kSuckerIntakeSpeed);
+        this.m_intake.outtakeRing(-0.2);
     }
 
     // checks to stops sucking
@@ -36,5 +37,6 @@ public class IntakeFromGround extends Command {
     public void end(boolean interrupted) {
         // runs when the command is ended
         this.m_intake.intakeRing(0);
+        this.m_intake.outtakeRing(0);
     }    
 }

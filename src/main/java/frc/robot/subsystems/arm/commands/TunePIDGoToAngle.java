@@ -37,7 +37,7 @@ public class TunePIDGoToAngle extends Command {
 
     public boolean isFinished() {
         // confirmation that arm is at angle
-        return m_arm.isAtAngle(); 
+        return false; // m_arm.isAtAngle(); 
     }
 
     public void end(boolean interrupted) {

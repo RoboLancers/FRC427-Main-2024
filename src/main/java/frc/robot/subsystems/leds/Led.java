@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.arm.Arm;
 import frc.robot.subsystems.arm.Arm.ArmControlState;
-import frc.robot.subsystems.hang.Hang;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.leds.patterns.LEDPattern;
 
@@ -39,6 +38,7 @@ public class Led extends SubsystemBase {
     public boolean beamHit = false;
     public boolean autoBegin = false;
     public boolean autoEnd = false; 
+    public boolean isHanging = false; 
     //public boolean isShootingToAmp = false;
     //public boolean isShootingToSpeaker = false;
 
@@ -143,7 +143,7 @@ public class Led extends SubsystemBase {
         if (this.isShooting) decidedHangPattern = Constants.LEDs.Patterns.kShootAnywhere;
         if (this.isIntaking) decidedHangPattern = Constants.LEDs.Patterns.kIntake;
         if (this.isMovingToNote) decidedHangPattern = Constants.LEDs.Patterns.kMovingToNote; 
-        if (Hang.getInstance().getHangPosition() > 0.5) decidedHangPattern = Constants.LEDs.Patterns.kHangActive;
+        if (isHanging) decidedHangPattern = Constants.LEDs.Patterns.kHangActive;
         if (Intake.getInstance().beamBreakHit()) decidedHangPattern = Constants.LEDs.Patterns.kBeamHit;
         setArmPattern(decidedArmPattern);
         setHangPattern(decidedHangPattern);

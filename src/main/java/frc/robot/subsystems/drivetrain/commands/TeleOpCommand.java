@@ -3,7 +3,6 @@ package frc.robot.subsystems.drivetrain.commands;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
 import frc.robot.subsystems.drivetrain.Drivetrain;
 import frc.robot.util.ChassisState;
 import frc.robot.util.DriverController;
@@ -22,10 +21,10 @@ public class TeleOpCommand extends Command {
 
     @Override
     public void initialize() {
-        SmartDashboard.putBoolean("snap", true);
+        if (!SmartDashboard.containsKey("snap")) SmartDashboard.putBoolean("snap", true);
         m_drivetrain.resetLastTurnedTheta(); 
-        SmartDashboard.putNumber("Rotation Speed", 3.14);
-        SmartDashboard.putNumber("Linear Speed", 1.0);
+        if (!SmartDashboard.containsKey("Rotation Speed")) SmartDashboard.putNumber("Rotation Speed", 3.14);
+        if (!SmartDashboard.containsKey("Linear Speed")) SmartDashboard.putNumber("Linear Speed", 1.0);
     }
 
     @Override

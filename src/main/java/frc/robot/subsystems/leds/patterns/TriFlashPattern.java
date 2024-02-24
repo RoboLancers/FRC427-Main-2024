@@ -2,7 +2,6 @@ package frc.robot.subsystems.leds.patterns;
 
 import edu.wpi.first.wpilibj.util.Color;
 import frc.robot.subsystems.leds.AddressableLed;
-import edu.wpi.first.wpilibj.Timer;
 
 
 public class TriFlashPattern extends LEDPattern{

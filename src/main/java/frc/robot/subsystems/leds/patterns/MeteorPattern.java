@@ -24,7 +24,7 @@ public class MeteorPattern extends LEDPattern{
                     buf.setLED(i, color);
                 }
                 else {
-                    buf.setLED(i, color.kBlack);
+                    buf.setLED(i, Color.kBlack);
                 }
             }
             

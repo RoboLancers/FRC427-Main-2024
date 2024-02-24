@@ -20,7 +20,7 @@ import frc.robot.subsystems.intake.commands.SetSuckerIntakeSpeed;
 import frc.robot.util.ChassisState;
 import frc.robot.util.DriverController;
 
-public class UpdatedShootAnywhere extends Command {
+public class GeneralizedReleaseRoutine extends Command {
     
     public Drivetrain drivetrain;
     public Arm arm;
@@ -30,19 +30,21 @@ public class UpdatedShootAnywhere extends Command {
     public Timer timer = new Timer(); 
     public Pose2d targetPose; 
 
-    public UpdatedShootAnywhere(DriverController driverController, Drivetrain drivetrain, Arm arm, Intake intake) {
+    public GeneralizedReleaseRoutine(DriverController driverController, Drivetrain drivetrain, Arm arm, Intake intake) {
         this.arm = arm;
         this.intake = intake;
         this.drivetrain = drivetrain;
         this.driverController = driverController;
 
-        addRequirements(drivetrain, arm, intake);
+        addRequirements(drivetrain, arm);
     }
 
+    // gets alliance color
+    // revs shooter wheels
     public void initialize() {
         timer.reset();
         timer.start();
-        intake.outtakeRing(Constants.IntakeConstants.kShootSuckerSpeed);
+        CommandScheduler.getInstance().schedule(SetShooterSpeed.revAndIndex(intake, Constants.IntakeConstants.kShootSpeed));
         this.optAlliance = DriverStation.getAlliance();
         Alliance alliance = optAlliance.get();
         if (alliance == DriverStation.Alliance.Blue) {
@@ -53,6 +55,9 @@ public class UpdatedShootAnywhere extends Command {
         }
     }
 
+    // gets the driver pose
+    // rotates the robot to the angle to face the speaker & turns the arm to the angle 
+    // sets the driver speed to robot controller input
     public void execute() {
         Pose2d currentPose = drivetrain.getPose();
         double finalAngle = Math.atan2(currentPose.getY() - targetPose.getY(),  currentPose.getX() - targetPose.getX());
@@ -61,14 +66,19 @@ public class UpdatedShootAnywhere extends Command {
         arm.goToAngle(angleToTurnArm);
         ChassisState speeds = driverController.getDesiredChassisState(); 
         speeds.omegaRadians = finalAngle;
-        speeds.turn = true; 
-        drivetrain.swerveDriveFieldRel(speeds, true);
+        speeds.turn = true;
+        drivetrain.swerveDriveFieldRel(speeds, false);
     }
 
+    // sees if has gone over time
     public boolean isFinished() {
         return timer.get() > Constants.Vision.shootAnywhereTimeout || optAlliance.isEmpty() || targetPose == null;
     }
 
+    // sees if the robot is in shooting range
+    // goes to the arm angle
+    // revs and shoots
+    // moves the arm to travel position in the end
     public void end(boolean interrupted) {
         timer.stop();
         boolean isInRange = false;

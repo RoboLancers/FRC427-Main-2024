@@ -29,7 +29,7 @@ public class OuttakeToSpeaker extends SequentialCommandGroup {
     // }
 
     public static Command outtakeToSpeaker(Intake intake) {
-        return new SetShooterSpeed(intake, Constants.IntakeConstants.kShootSpeed)
+        return SetShooterSpeed.revAndIndex(intake, Constants.IntakeConstants.kShootSpeed)
         .andThen(new WaitCommand(Constants.IntakeConstants.kShootRevTime))
         .andThen(new SetSuckerIntakeSpeed(intake, Constants.IntakeConstants.kShootSuckerSpeed))
         .andThen(new WaitCommand(Constants.IntakeConstants.kShootWaitTime))

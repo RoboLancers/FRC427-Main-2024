@@ -1,22 +1,16 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj2.command.Command;
 import java.util.Optional;
 
+import javax.swing.text.html.Option;
+
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Transform2d;
-import edu.wpi.first.math.geometry.Twist2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants;
-import frc.robot.subsystems.arm.Arm;
-import frc.robot.subsystems.arm.commands.GoToAngle;
 import frc.robot.subsystems.drivetrain.Drivetrain;
-import frc.robot.subsystems.intake.Intake;
+import frc.robot.subsystems.hang.Hang;
 import frc.robot.util.ChassisState;
 import frc.robot.util.DriverController;
 import frc.robot.util.quad.OrderedPair;
@@ -26,51 +20,44 @@ public class GeneralizedHangRoutine extends Command {
     
     public DriverController driverController;
     public Drivetrain drivetrain;
-    public Arm arm;
-    public Intake intake;
+    public Hang hang;
     private double angleToTurn; 
     private boolean stop = false; 
 
-    public GeneralizedHangRoutine(DriverController driverController, Drivetrain drivetrain, Arm arm, Intake intake) {
-        this.arm = arm;
+    public GeneralizedHangRoutine(DriverController driverController, Drivetrain drivetrain, Hang hang) {
+        this.hang = hang;
         this.driverController = driverController;
-        this.intake = intake;
         this.drivetrain = drivetrain;
 
-        addRequirements(drivetrain, arm, intake); 
+        addRequirements(drivetrain, hang); 
     }
 
     public void initialize() {
-        this.stop = false; 
-        Optional<Double> angle = getAngle(drivetrain.getPose());
-        if (angle.isEmpty()) {
+        Optional<Double> angToTurn = getAngle(drivetrain.getPose()); 
+        if (angToTurn.isEmpty()) {
             stop = true; 
-        } else {
-            this.angleToTurn = angle.get(); 
+            return; 
         }
-        arm.goToAngle(90);
+        this.angleToTurn = angToTurn.get(); 
+        hang.setPosition(Constants.HangConstants.kHangMaxUp);
     }
 
     public void execute() {
         ChassisState speeds = driverController.getDesiredChassisState(); 
         speeds.omegaRadians = Math.toRadians(this.angleToTurn);
-        speeds.turn = true; 
-
-        double newVx = speeds.vxMetersPerSecond * Math.cos(speeds.omegaRadians) - speeds.vyMetersPerSecond * Math.sin(speeds.omegaRadians); 
-        double newVy = speeds.vxMetersPerSecond * Math.sin(speeds.omegaRadians) + speeds.vyMetersPerSecond * Math.cos(speeds.omegaRadians); 
-
-        speeds.vxMetersPerSecond = newVx; 
-        speeds.vyMetersPerSecond = newVy;
-
-        drivetrain.swerveDriveFieldRel(speeds, false);
+        speeds.turn = true;
+        ChassisState finalState = new ChassisState(
+            speeds.vxMetersPerSecond * Math.cos(Math.toRadians(this.angleToTurn)) - speeds.vyMetersPerSecond * Math.sin(Math.toRadians(this.angleToTurn)), 
+            speeds.vxMetersPerSecond * Math.sin(Math.toRadians(this.angleToTurn)) + speeds.vyMetersPerSecond * Math.cos(Math.toRadians(this.angleToTurn)), speeds.omegaRadians, true);
+        drivetrain.swerveDriveFieldRel(finalState, false);
     }
 
     public boolean isFinished() {
-        return stop;
+        return false;
     }
 
     public void end(boolean interrupted) {
-        arm.goToAngle(0); 
+        hang.setPosition(Constants.HangConstants.kHangInitial);
     }
 
 

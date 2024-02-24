@@ -30,7 +30,7 @@ public class DriverCommands {
     });  
   }
 
-  public Command tuneShooting(Drivetrain drivetrain, Arm arm, Intake intake) {
+  public static Command tuneShooting(Drivetrain drivetrain, Arm arm, Intake intake) {
     return Commands.defer(() -> {
         double angle = IOUtils.get("arm angle"); 
 
@@ -55,13 +55,16 @@ public class DriverCommands {
         TurnToAngle turnToAngle = new TurnToAngle(drivetrain, Math.toDegrees(finalAngle));
 
         SmartDashboard.putNumber("TuneShooting/distance", distance); 
-        SmartDashboard.putNumber("TuneShooting/angleToSpeaker", finalAngle); 
+        SmartDashboard.putNumber("TuneShooting/angleToSpeaker", Math.toDegrees(finalAngle)); 
 
         return Commands.sequence(
             turnToAngle, 
             new GoToAngle(arm, angle),
+            Commands.run(() -> intake.intakeRing(-0.1), intake)
+            .until(() -> !intake.beamBreakHit())
+            .finallyDo(() -> intake.intakeRing(0)),
             OuttakeToSpeaker.outtakeToSpeaker(intake)
         );
-    }, Set.of(arm, intake)); 
+    }, Set.of(drivetrain, arm, intake)); 
   }
 }

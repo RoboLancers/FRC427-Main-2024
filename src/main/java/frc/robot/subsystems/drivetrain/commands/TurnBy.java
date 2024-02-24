@@ -21,7 +21,7 @@ public class TurnBy extends TurnToAngle {
             super.initialize();
             // when it's time to run the command, set the setpoint to whatever we need it to be 
             // (in this case, the drivetrain's initial angle + the inputted angle)
-            this.initialAngle = this.drivetrain.getHeading(); 
+            this.initialAngle = this.drivetrain.getRotation().getDegrees(); 
             this.setpoint = this.initialAngle + this.additionalAngle;
         }
 }

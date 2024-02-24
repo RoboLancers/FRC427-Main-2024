@@ -53,6 +53,8 @@ public class Drivetrain extends SubsystemBase {
   // represents the current drive state of the robot
   private DriveState driveState = DriveState.CLOSED_LOOP; 
 
+  private double rotationPerSecond = 0; 
+
   private PIDController rotationController = new PIDController(
       Constants.DrivetrainConstants.kTurn_P,
       Constants.DrivetrainConstants.kTurn_I,
@@ -86,7 +88,6 @@ public class Drivetrain extends SubsystemBase {
     this.odometry.update(Rotation2d.fromRadians(m_Rotation), getPositions());
 
     m_odometryField.setRobotPose(getPose());
-
     SmartDashboard.putData("Robot Odometry Field", m_odometryField);
     SmartDashboard.putData("Robot Vision Field", m_visionField);
     doSendables();
@@ -119,12 +120,12 @@ public class Drivetrain extends SubsystemBase {
    * @param rotationRadPerSecond the speed to rotate at in radians per second
    * 
    */
-  public void swerveDrive(double xMetersPerSecond, double yMetersPerSecond, double rotationRadPerSecond, boolean flipAlliance) {
+  public void swerveDrive(double xMetersPerSecond, double yMetersPerSecond, double rotationRadPerSecond, boolean flipField) {
     swerveDrive(new ChassisSpeeds(
       xMetersPerSecond, 
       yMetersPerSecond, 
       rotationRadPerSecond
-    ), flipAlliance);
+    ), flipField);
   }
 
   public void swerveDriveRobotCentric(ChassisState state) {
@@ -149,15 +150,15 @@ public class Drivetrain extends SubsystemBase {
    swerveDriveRobotCentric(new ChassisSpeeds(state.vxMetersPerSecond, state.vyMetersPerSecond, rotSpeed));
   }
 
-  private double rotationPerSecond = 0; 
+  public void swerveDrive(ChassisSpeeds speeds, boolean flipField) {
 
-  public void swerveDrive(ChassisSpeeds speeds, boolean flipAlliance) {
-    Optional<Alliance> opt = DriverStation.getAlliance(); 
-    if (!opt.isPresent()) return; 
-    Alliance alliance = opt.get(); 
+    Optional<Alliance> optAlliance = DriverStation.getAlliance(); 
+
+    if (optAlliance.isEmpty()) return; 
+
     ChassisSpeeds robotRelative = ChassisSpeeds.fromFieldRelativeSpeeds(
       speeds, 
-      alliance == Alliance.Red && flipAlliance ? getRotation().plus(Rotation2d.fromDegrees(180)) : getRotation()
+      optAlliance.get() == Alliance.Red && flipField ? getRotation().plus(Rotation2d.fromDegrees(180)) : getRotation() 
     ); 
 
     // correct for drift in the chassis
@@ -204,10 +205,10 @@ public class Drivetrain extends SubsystemBase {
   private double lastTurnedTheta = 0; 
 
   public void resetLastTurnedTheta() {
-    lastTurnedTheta = this.getRotation().getDegrees();  
+    lastTurnedTheta = this.getRotation().getDegrees(); 
   }
 
-  public void swerveDriveFieldRel(double xMetersPerSecond, double yMetersPerSecond, double thetaDegrees, boolean turn, boolean flipAlliance) {
+  public void swerveDriveFieldRel(double xMetersPerSecond, double yMetersPerSecond, double thetaDegrees, boolean turn, boolean flipField) {
     
    // if (turn) lastTurnedTheta = thetaDegrees; 
     
@@ -225,11 +226,11 @@ public class Drivetrain extends SubsystemBase {
 
     rotSpeed = MathUtil.clamp(rotSpeed, -Constants.DrivetrainConstants.kMaxRotationRadPerSecond, Constants.DrivetrainConstants.kMaxRotationRadPerSecond); 
 
-    swerveDrive(xMetersPerSecond, yMetersPerSecond, rotSpeed, flipAlliance);
+    swerveDrive(xMetersPerSecond, yMetersPerSecond, rotSpeed, flipField);
   }
 
-  public void swerveDriveFieldRel(ChassisState state, boolean flipAlliance) {
-    swerveDriveFieldRel(state.vxMetersPerSecond, state.vyMetersPerSecond, Math.toDegrees(state.omegaRadians), state.turn, flipAlliance);
+  public void swerveDriveFieldRel(ChassisState state, boolean flipField) {
+    swerveDriveFieldRel(state.vxMetersPerSecond, state.vyMetersPerSecond, Math.toDegrees(state.omegaRadians), state.turn, flipField);
   }
 
   // command the swerve modules to the intended states
@@ -273,14 +274,8 @@ public class Drivetrain extends SubsystemBase {
     return odometry.getEstimatedPosition(); 
   }
 
-  // returns the direction the robot is facing in degrees from -180 to 180 degrees.
-  public double getHeading() {
-      return gyro.getRotation2d().getDegrees();
-  }
-
-
   public Rotation2d getRotation() {
-    return odometry.getEstimatedPosition().getRotation(); 
+    return this.getPose().getRotation();
   }
 
   public void setRotation(Rotation2d rotation) {
@@ -289,12 +284,15 @@ public class Drivetrain extends SubsystemBase {
 
   // zeros the current heading of the robot
   public void zeroHeading() {
-    setRotation(new Rotation2d());
+    setHeading(Rotation2d.fromDegrees(0));
   }
 
-  // gets the raw heading of the robot
+  public void setHeading(Rotation2d heading) {
+    resetOdometry(new Pose2d(this.getPose().getX(), this.getPose().getY(), heading));
+  } 
+
   public Rotation2d getGyroRotation() {
-      return Rotation2d.fromRadians(m_Rotation);
+    return gyro.getRotation2d(); 
   }
 
   // Returns the rate at which the robot is turning in degrees per second.

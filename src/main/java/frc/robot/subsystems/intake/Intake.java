@@ -71,7 +71,7 @@ public class Intake extends SubsystemBase {
     }
     //so intaking the ring is sucking it
     public void intakeRing(double speed) {
-        m_outtakeMotorSuck.set(-speed);
+        m_outtakeMotorSuck.set(speed);
     }
     //and outtaking the ring is shooting it
     public void outtakeRing(double speed) {

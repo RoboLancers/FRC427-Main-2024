@@ -1,30 +1,24 @@
 package frc.robot.subsystems.vision;
 
-import java.util.List;
+import java.util.Optional;
 
+import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.targeting.PhotonPipelineResult;
-import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.Constants.Vision;
 import frc.robot.subsystems.drivetrain.Drivetrain;
 
 // Figures out the position of the robot based on april tags
@@ -36,17 +30,36 @@ public class BackVision extends SubsystemBase{
     private Drivetrain drivetrain;
     private PhotonCamera camera;
     private PhotonPipelineResult latestResult;
-    private Transform3d latestPoseResult;
+    private Pose3d latestPoseResult;
+    private PhotonPoseEstimator poseEstimator;
 
     private BackVision(Drivetrain drivetrain) {
         this.drivetrain = drivetrain;
         this.camera = new PhotonCamera("backPhotonCamera");
+        this.poseEstimator = new PhotonPoseEstimator(Constants.Vision.kAprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, camera, Constants.Vision.robotToCamera);
     }
 
     public void periodic() {
         this.latestResult = this.camera.getLatestResult();
-        this.latestPoseResult = this.latestResult.getMultiTagResult().estimatedPose.best;
-        // SmartDashboard.putNumber("RobotPositionX", networkTable.);
+        Optional<EstimatedRobotPose> optionalPose = this.poseEstimator.update();
+        if (optionalPose.isPresent()) {
+            this.latestPoseResult = optionalPose.get().estimatedPose;
+        }
+        else {
+            this.latestPoseResult = null;
+        }
+
+        if (getCurrentPose3d() != null) {
+             SmartDashboard.putNumber("VisionRobotX", getCurrentPose3d().getX());
+            SmartDashboard.putNumber("VisionRobotY", getCurrentPose3d().getY());
+            SmartDashboard.putNumber("VisionRobotZ", getCurrentPose3d().getZ());
+        }
+        if (getAprilTagPos(getBestAprilTagID()) != null) {
+            SmartDashboard.putNumber("VisionTargetX", getAprilTagPos(getBestAprilTagID()).getX());
+            SmartDashboard.putNumber("VisionTargetY", getAprilTagPos(getBestAprilTagID()).getY());
+            SmartDashboard.putNumber("VisionTargetZ", getAprilTagPos(getBestAprilTagID()).getZ());
+        }
+        if (this.latestPoseResult != null) addVisionFromDrivetrain();
     }
 
     public static BackVision getInstance() {
@@ -104,7 +117,7 @@ public class BackVision extends SubsystemBase{
 
     // Returns the rotation3d using values stored in the network table
     private Pose3d getCurrentPose3d() {
-        return new Pose3d().transformBy(this.latestPoseResult); // TODO: does this work?
+        return this.latestPoseResult;
     }
 
     // Adds vision measurements to the drivetrain if they are within the field

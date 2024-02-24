@@ -1,31 +1,31 @@
 {
-  "robotWidth": 0.7262,
-  "robotLength": 0.79,
-  "holonomicMode": true,
-  "pathFolders": [
-    "Amp Note",
-    "Middle Back",
-    "Special",
-    "Note Middle",
-    "Speaker Amp",
-    "Speaker Middle",
-    "Speaker Note",
-    "Testing"
-  ],
-  "autoFolders": [
-    "3 piece auto",
-    "4 note auto",
-    "Archive",
-    "Leave Autos",
-    "Score Preload",
-    "Shoot anywhere",
-    "Testing",
-    "Two Piece Middle Fling",
-    "TwoPieceReturn"
-  ],
-  "defaultMaxVel": 4.0,
-  "defaultMaxAccel": 4.0,
-  "defaultMaxAngVel": 120.0,
-  "defaultMaxAngAccel": 120.0,
-  "maxModuleSpeed": 4.5
+    "robotWidth": 0.7262,
+    "robotLength": 0.79,
+    "holonomicMode": true,
+    "pathFolders": [
+        "Amp Note",
+        "Middle Back",
+        "Special",
+        "Note Middle",
+        "Speaker Amp",
+        "Speaker Middle",
+        "Speaker Note",
+        "Testing"
+    ],
+    "autoFolders": [
+        "3 piece auto",
+        "4 note auto",
+        "Archive",
+        "Leave Autos",
+        "Score Preload",
+        "Shoot anywhere",
+        "Testing",
+        "Two Piece Middle Fling",
+        "TwoPieceReturn"
+    ],
+    "defaultMaxVel": 1.0,
+    "defaultMaxAccel": 1.0,
+    "defaultMaxAngVel": 120.0,
+    "defaultMaxAngAccel": 120.0,
+    "maxModuleSpeed": 4.5
 }
