@@ -31,5 +31,11 @@ public class ChassisState {
     this.turn = turn; 
   }
 
+  @Override
+  public String toString() {
+    return String.format(
+        "ChassisState(Vx: %.2f m/s, Vy: %.2f m/s, Theta: %.2f rad, Turn: %s )",
+        vxMetersPerSecond, vyMetersPerSecond, omegaRadians, turn);
+  }
 
 }

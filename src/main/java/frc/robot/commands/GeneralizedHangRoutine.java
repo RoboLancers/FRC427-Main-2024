@@ -49,7 +49,7 @@ public class GeneralizedHangRoutine extends Command {
         ChassisState finalState = new ChassisState(
             speeds.vxMetersPerSecond * Math.cos(Math.toRadians(this.angleToTurn)) - speeds.vyMetersPerSecond * Math.sin(Math.toRadians(this.angleToTurn)), 
             speeds.vxMetersPerSecond * Math.sin(Math.toRadians(this.angleToTurn)) + speeds.vyMetersPerSecond * Math.cos(Math.toRadians(this.angleToTurn)), speeds.omegaRadians, true);
-        drivetrain.swerveDriveFieldRel(finalState, false);
+        drivetrain.swerveDriveFieldRel(finalState, false, false);
     }
 
     public boolean isFinished() {

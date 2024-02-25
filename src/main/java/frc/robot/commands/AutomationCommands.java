@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import java.lang.invoke.ConstantBootstraps;
 import java.util.Set;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -24,16 +25,20 @@ import frc.robot.util.DriverController;
 public class AutomationCommands {
   
   //Create autoIntakeCOmmand Command
-  public static Command autoIntakeCommand() {
+  public static Command autoIntakeCommand(double intakeSpeed) {
     // Set Leds to Intake
     return Commands.runOnce(() -> Led.getInstance().isIntaking = true).andThen(Commands.parallel(
-        new IntakeFromGround(Intake.getInstance()),
+        new IntakeFromGround(Intake.getInstance(), intakeSpeed),
         new GoToGround(Arm.getInstance())
       )).finallyDo(() -> {
         // Reset arm to travel and reset Leds
         Arm.getInstance().goToAngle(Constants.ArmConstants.kTravelPosition);
         Led.getInstance().isIntaking = false;
     });
+  }
+
+  public static Command autoIntakeCommand() {
+    return autoIntakeCommand(Constants.IntakeConstants.kShootSuckerSpeed); 
   }
 
   //Create pathFindToSpeaker Command

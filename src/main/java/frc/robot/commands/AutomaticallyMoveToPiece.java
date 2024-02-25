@@ -29,7 +29,7 @@ public class AutomaticallyMoveToPiece {
             ChassisState finalState = new ChassisState(
                 speeds.vxMetersPerSecond * Math.cos(Math.toRadians(actualAngle)) - speeds.vyMetersPerSecond * Math.sin(Math.toRadians(actualAngle)), 
                 speeds.vxMetersPerSecond * Math.sin(Math.toRadians(actualAngle)) + speeds.vyMetersPerSecond * Math.cos(Math.toRadians(actualAngle)), Math.toRadians(actualAngle), true);
-            drivetrain.swerveDriveFieldRel(finalState, false);
+            drivetrain.swerveDriveFieldRel(finalState, false, false);
         }, drivetrain), AutomationCommands.autoIntakeCommand()); // Any processing before turning to that angle
     }
 }

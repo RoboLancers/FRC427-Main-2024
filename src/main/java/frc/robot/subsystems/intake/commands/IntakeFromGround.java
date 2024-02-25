@@ -7,13 +7,20 @@ import frc.robot.subsystems.intake.Intake;
 public class IntakeFromGround extends Command {
      // declare to intake with speed
     Intake m_intake;
+    double speed; 
 
      // establishes intake, speed
-    public IntakeFromGround(Intake intake) {
+    public IntakeFromGround(Intake intake, double speed) {
         this.m_intake = intake;
+        this.speed = speed; 
 
         addRequirements(intake);
     }
+
+    public IntakeFromGround(Intake intake) {
+        this(intake, Constants.IntakeConstants.kSuckerIntakeSpeed); 
+    }
+
 
     // starts intaking (using the sucker motor)
     public void initialize() {
@@ -23,8 +30,8 @@ public class IntakeFromGround extends Command {
     // keeps intaking with the sucker
     public void execute() {
         // runs repeatedly until the command is finished
-        this.m_intake.intakeRing(Constants.IntakeConstants.kSuckerIntakeSpeed);
-        this.m_intake.outtakeRing(-0.2);
+        this.m_intake.intakeRing(speed);
+        this.m_intake.outtakeRing(-0.3);
     }
 
     // checks to stops sucking
