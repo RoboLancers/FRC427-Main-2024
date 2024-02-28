@@ -5,12 +5,14 @@
 package frc.robot;
 
 import frc.robot.commands.AutomationCommands;
+import frc.robot.commands.DriverCommands;
 import frc.robot.subsystems.arm.Arm;
 import frc.robot.subsystems.arm.Arm.ArmControlState;
 import frc.robot.subsystems.arm.commands.GoToAmp;
 import frc.robot.subsystems.arm.commands.GoToGround;
 import frc.robot.subsystems.arm.commands.GoToSpeaker;
 import frc.robot.subsystems.arm.commands.GoToTravel;
+import frc.robot.subsystems.arm.commands.SetVelocity;
 import frc.robot.subsystems.drivetrain.Drivetrain;
 import frc.robot.subsystems.drivetrain.commands.TeleOpCommand;
 import frc.robot.subsystems.hang.Hang;
@@ -18,11 +20,13 @@ import frc.robot.subsystems.hang.commands.SetHangSpeed;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.intake.commands.IntakeFromGround;
 import frc.robot.subsystems.intake.commands.OuttakeToAmp;
+import frc.robot.subsystems.intake.commands.OuttakeToSpeaker;
 import frc.robot.subsystems.intake.commands.SetShooterSpeed;
 import frc.robot.subsystems.intake.commands.SetSuckerIntakeSpeed;
 import frc.robot.util.DriverController;
 import frc.robot.util.DriverController.Mode;
 import frc.robot.subsystems.leds.Led;
+import frc.robot.subsystems.vision.FrontVision;
 import frc.robot.subsystems.vision.Vision_old;
 
 import java.util.Optional;
@@ -35,6 +39,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 
 public class RobotContainer {
@@ -55,7 +60,7 @@ public class RobotContainer {
 
   // limelight subsystem of robot
   // private final BackVision backVision = BackVision.getInstance();
-  // private final FrontVision frontVision = FrontVision.getInstance(); 
+  private final FrontVision frontVision = FrontVision.getInstance(); 
 
   // hang mechanism of robot
   private final Hang hang = Hang.getInstance();
@@ -67,9 +72,9 @@ public class RobotContainer {
 
   // controller for the driver
   private final DriverController driverController =
-      new DriverController(0);
+      DriverController.getInstance(); 
 
-  private final CommandXboxController manipulatorController = new CommandXboxController(1); 
+  private final CommandXboxController manipulatorController = new CommandXboxController(Constants.OperatorConstants.kManipulatorControllerPort); 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -83,6 +88,7 @@ public class RobotContainer {
     // default command for drivetrain is to calculate speeds from controller and drive the robot
     drivetrain.setDefaultCommand(new TeleOpCommand(drivetrain, driverController));
   }
+
 
   private void configureBindings() {
     // --- Driver ---
@@ -100,7 +106,13 @@ public class RobotContainer {
       .onTrue(new InstantCommand(() -> driverController.setSlowMode(Mode.SLOW)))
       .onFalse(new InstantCommand(() -> driverController.setSlowMode(Mode.NORMAL))); 
 
-      driverController.y().whileTrue(AutomationCommands.shootFromAnywhere()); 
+    driverController.y().onTrue(new SetSuckerIntakeSpeed(intake, -0.5)).onFalse(new SetSuckerIntakeSpeed(intake, 0)); 
+
+      // TODO: tune
+      // driverController.y().whileTrue(DriverCommands.tuneShooting(drivetrain, arm, intake)); 
+
+      // TODO: tune
+      // driverController.y().whileTrue(new TuneTurnToAngle(drivetrain)); 
 
 
    //  move to setpoints
@@ -127,20 +139,10 @@ public class RobotContainer {
         intake.stopShoot();
       }));
 
-      // TODO: see which one is better
-      // -- hold a button that revs up and outtakes
-    // manipulatorController.leftBumper().and(() -> arm.getArmControlState() == ArmControlState.SPEAKER)
-    //   .whileTrue(new OuttakeToSpeaker(intake));
-
-      // -- hold a button to rev up, outtakes after release
+      // hold a button to rev up, outtakes after release
       manipulatorController.leftBumper().and(() -> arm.getArmControlState() == ArmControlState.SPEAKER)
-      .whileTrue(SetShooterSpeed.revAndIndex(intake, 1))
-      .onFalse(
-        new SetSuckerIntakeSpeed(intake, 1)
-        .andThen(new WaitCommand(0.5))
-        .andThen(new SetShooterSpeed(intake, 0))
-        .andThen(new SetSuckerIntakeSpeed(intake, 0))
-      );
+      .whileTrue(OuttakeToSpeaker.revAndIndex(intake))
+      .onFalse(OuttakeToSpeaker.shoot(intake, 0.5));
       
      // intake
      manipulatorController.leftBumper().and(() -> arm.getArmControlState() == ArmControlState.GROUND)

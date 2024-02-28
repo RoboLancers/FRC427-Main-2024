@@ -1,4 +1,7 @@
-package frc.robot.util.quad; 
+package frc.robot.util.quad;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 
 public class OrderedPair {
 
@@ -31,4 +34,13 @@ public class OrderedPair {
         }
         return (this.y - this.x * slope);
     }
+
+    public static OrderedPair fromPose2d(Pose2d pose) {
+        return new OrderedPair(pose.getX(), pose.getY()); 
+    }
+
+    public Pose2d toPose2d() {
+        return new Pose2d(this.x, this.y, new Rotation2d()); 
+    }
+
 }

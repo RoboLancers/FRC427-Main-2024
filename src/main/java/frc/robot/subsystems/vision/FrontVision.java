@@ -8,8 +8,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 // Figures out which game pieces are near
 public class FrontVision extends SubsystemBase{
-     public static FrontVision instance; 
-     //  = new FrontVision();
+     public static FrontVision instance  = new FrontVision();
 
     private PhotonCamera camera;
     private PhotonPipelineResult latestResult;
@@ -33,6 +32,7 @@ public class FrontVision extends SubsystemBase{
     }
 
     public double getNoteRotation() {
+        if (this.latestResult == null || this.latestResult.getBestTarget() == null) return 0; 
         return latestResult.getBestTarget().getYaw();
     }
 

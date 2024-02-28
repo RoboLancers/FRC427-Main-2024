@@ -32,4 +32,16 @@ public class Line {
         }
         return valueAtX(comparisonPoint.getX()) <= comparisonPoint.getY();
     }
+
+    public double getLength() {
+        return Math.sqrt(Math.pow((pointA.getX() - pointB.getX()), 2) + Math.pow((pointA.getY() - pointB.getY()), 2));
+    }
+
+    public double getDeltaX() {
+        return pointA.getX() - pointB.getX();
+    }
+
+    public double getDeltaY() {
+        return pointA.getY() - pointB.getY();
+    }
 }

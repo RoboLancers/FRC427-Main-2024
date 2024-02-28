@@ -1,7 +1,9 @@
 package frc.robot.subsystems.intake;
 
+import com.revrobotics.CANSparkBase;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -27,6 +29,9 @@ public class Intake extends SubsystemBase {
     public static Intake getInstance() {
         return instance; 
     }
+
+    // desire speed
+    private double m_desireSpeed;
     
     // establishes the motors for shooter and sucker. Also establishes the beambreak.
     MotorSim m_intakeMotorShootTop = new MotorSim(Constants.IntakeConstants.kIntakeMotorShootTopId, MotorType.kBrushless, Mode.MANUAL);
@@ -38,6 +43,8 @@ public class Intake extends SubsystemBase {
     MotorSim m_outtakeMotorSuck = new MotorSim(Constants.IntakeConstants.kOuttakeMotorSuckId, MotorType.kBrushless, Mode.MANUAL);
     //RelativeEncoder m_outtakeEncoderSuck = m_outtakeMotorSuck.getEncoder();
 
+    SparkPIDController m_intakePidController = m_intakeMotorShootTop.getPIDController();
+
 
     // beambreak checks for if theres a note in the intake
     DigitalInput m_BeamBreak = new DigitalInput(Constants.IntakeConstants.kBeamBreakId); 
@@ -45,6 +52,8 @@ public class Intake extends SubsystemBase {
     
     private Intake() {
         setupMotors();
+        setupControllers();
+
     }
     public void setupMotors() {
         // sets limits for all the motors and has the bottom shoot motor, follow the top
@@ -62,11 +71,19 @@ public class Intake extends SubsystemBase {
         m_outtakeMotorSuck.setVelocityConversionFactor(Constants.IntakeConstants.kIntakeVelocityConversionFactor); 
     }
 
+    public void setupControllers() {
+        m_intakePidController.setP(Constants.IntakeConstants.kP);
+        m_intakePidController.setI(Constants.IntakeConstants.kI);
+        m_intakePidController.setD(Constants.IntakeConstants.kD);
+        m_intakePidController.setFF(Constants.IntakeConstants.kFF);
+    }
+
     public void periodic() {
         m_intakeMotorShootBottom.update(0.02);
         m_intakeMotorShootTop.update(0.02);
         m_outtakeMotorSuck.update(0.02);
         // code inside here will run repeatedly while the robot is on
+        m_intakePidController.setReference(m_desireSpeed, CANSparkBase.ControlType.kVelocity);
         doSendables();
     }
     //so intaking the ring is sucking it
@@ -75,7 +92,9 @@ public class Intake extends SubsystemBase {
     }
     //and outtaking the ring is shooting it
     public void outtakeRing(double speed) {
-        m_intakeMotorShootTop.set(speed);
+        // m_intakeMotorShootTop.set(speed);
+        this.m_desireSpeed = speed;
+        
     }
     //beambreak is a scanner that checks if a ring is inside the whole intake
     public boolean beamBreakHit() { 
@@ -86,7 +105,12 @@ public class Intake extends SubsystemBase {
     }
     
     public void stopShoot() {
-        m_intakeMotorShootTop.set(0);
+        // m_intakeMotorShootTop.set(0);
+        outtakeRing(0);
+    }
+
+    public boolean atDesiredShootSpeed() {
+        return (Math.abs(m_intakeEncoderShootTop.getVelocity() - m_desireSpeed) <= Constants.IntakeConstants.kTolerance); 
     }
 
      public void doSendables() { 

@@ -1,8 +1,11 @@
 package frc.robot.subsystems.intake.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants;
+import frc.robot.commands.DriverCommands;
 import frc.robot.subsystems.intake.Intake;
+import frc.robot.util.DriverController;
 
 public class IntakeFromGround extends Command {
      // declare to intake with speed
@@ -31,7 +34,7 @@ public class IntakeFromGround extends Command {
     public void execute() {
         // runs repeatedly until the command is finished
         this.m_intake.intakeRing(speed);
-        this.m_intake.outtakeRing(-0.3);
+        this.m_intake.outtakeRing(-1000);
     }
 
     // checks to stops sucking
@@ -42,6 +45,10 @@ public class IntakeFromGround extends Command {
 
     // stops sucking
     public void end(boolean interrupted) {
+
+        System.out.println(interrupted);
+        if (!interrupted) CommandScheduler.getInstance().schedule(DriverCommands.indicateBeamBreak(DriverController.getInstance().getHID())); 
+
         // runs when the command is ended
         this.m_intake.intakeRing(0);
         this.m_intake.outtakeRing(0);

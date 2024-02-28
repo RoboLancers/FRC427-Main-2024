@@ -9,6 +9,12 @@ import frc.robot.Constants;
 
 public class DriverController extends CommandXboxController {
 
+    private static final DriverController instance = new DriverController(Constants.OperatorConstants.kDriverControllerPort); 
+
+    public static DriverController getInstance() {
+        return instance; 
+    }
+
     private final SlewRateLimiter forwardRateLimiter = new SlewRateLimiter(Constants.DrivetrainConstants.kForwardSlewRate);
     private final SlewRateLimiter strafeRateLimiter = new SlewRateLimiter(Constants.DrivetrainConstants.kStrafeSlewRate);
     private final SlewRateLimiter turnRateLimiter = new SlewRateLimiter(Constants.DrivetrainConstants.kTurnSlewRate);
@@ -26,12 +32,12 @@ public class DriverController extends CommandXboxController {
     private Supplier<Double> maxSpeed = () -> mode == Mode.NORMAL ? Constants.DrivetrainConstants.kMaxSpeedMetersPerSecond : Constants.DrivetrainConstants.kMaxSlowSpeedMetersPerSecond;   
     private Supplier<Double> maxRotation = () -> mode == Mode.NORMAL ? Constants.DrivetrainConstants.kMaxRotationRadPerSecond : Constants.DrivetrainConstants.kMaxSlowRotationRadPerSecond; 
 
-    public DriverController(int port) {
+    private DriverController(int port) {
         this(port, 0.05); 
         
     }
 
-    public DriverController(int port, double deadzone) {
+    private DriverController(int port, double deadzone) {
         super(port); 
         this.deadzone = deadzone; 
     }

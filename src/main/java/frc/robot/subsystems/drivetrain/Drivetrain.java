@@ -67,6 +67,7 @@ public class Drivetrain extends SubsystemBase {
   private Drivetrain() {
 
     this.rotationController.enableContinuousInput(-180, 180); 
+    this.rotationController.setTolerance(Constants.DrivetrainConstants.kTurnErrorThreshold);
 
     // zero yaw when drivetrain first starts up
     this.gyro.zeroYaw();

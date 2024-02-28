@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.arm.Arm;
 import frc.robot.subsystems.arm.Arm.ArmControlState;
-import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.leds.patterns.LEDPattern;
 
 
@@ -125,13 +124,13 @@ public class Led extends SubsystemBase {
     @Override
     public void periodic() {
 
-        LEDPattern decidedUnderBellyPattern = LEDPattern.kEmpty; 
+        LEDPattern decidedHangPattern = LEDPattern.kEmpty; 
         LEDPattern decidedArmPattern = LEDPattern.kEmpty;
 
     //    lower priorities
-        if (DriverStation.isEnabled()) decidedUnderBellyPattern = Constants.LEDs.Patterns.kEnabled; 
-        if (DriverStation.isDisabled()) decidedUnderBellyPattern = Constants.LEDs.Patterns.kDisabled; 
-        if (DriverStation.isAutonomousEnabled()) decidedUnderBellyPattern = Constants.LEDs.Patterns.kAuto;
+        if (DriverStation.isEnabled()) decidedHangPattern = Constants.LEDs.Patterns.kEnabled; 
+        if (DriverStation.isDisabled()) decidedHangPattern = Constants.LEDs.Patterns.kDisabled; 
+        if (DriverStation.isAutonomousEnabled()) decidedHangPattern = Constants.LEDs.Patterns.kAuto;
        
          if (Arm.getInstance().getArmControlState() == ArmControlState.TRAVEL) decidedArmPattern = Constants.LEDs.Patterns.kArmMoving;
         if (Arm.getInstance().getArmControlState() == ArmControlState.AMP) decidedArmPattern = Constants.LEDs.Patterns.kArmAtAmp;
@@ -143,10 +142,10 @@ public class Led extends SubsystemBase {
         if (this.isShooting) decidedArmPattern = Constants.LEDs.Patterns.kShootAnywhere;
         if (this.isIntaking) decidedArmPattern = Constants.LEDs.Patterns.kIntake;
         if (this.isMovingToNote) decidedArmPattern = Constants.LEDs.Patterns.kMovingToNote; 
-        if (isHanging) decidedArmPattern = Constants.LEDs.Patterns.kHangActive;
-        if (Intake.getInstance().beamBreakHit()) decidedArmPattern = Constants.LEDs.Patterns.kBeamHit;
-        setArmPattern(decidedUnderBellyPattern);
-        setHangPattern(decidedArmPattern);
+        if (this.isHanging) decidedArmPattern = Constants.LEDs.Patterns.kHangActive;
+        if (this.beamHit) decidedArmPattern = Constants.LEDs.Patterns.kBeamHit; 
+        setArmPattern(decidedArmPattern);
+        setHangPattern(decidedHangPattern);
 
 
         //Constantly updates leds with respect to time
