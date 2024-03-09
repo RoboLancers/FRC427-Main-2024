@@ -34,7 +34,7 @@ public class IntakeFromGround extends Command {
     public void execute() {
         // runs repeatedly until the command is finished
         this.m_intake.intakeRing(speed);
-        this.m_intake.outtakeRing(-1000);
+        this.m_intake.outtakeRing(-750);
     }
 
     // checks to stops sucking
@@ -45,8 +45,6 @@ public class IntakeFromGround extends Command {
 
     // stops sucking
     public void end(boolean interrupted) {
-
-        System.out.println(interrupted);
         if (!interrupted) CommandScheduler.getInstance().schedule(DriverCommands.indicateBeamBreak(DriverController.getInstance().getHID())); 
 
         // runs when the command is ended

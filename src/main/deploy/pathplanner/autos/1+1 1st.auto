@@ -12,50 +12,32 @@
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "ShootSpeaker"
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "Speaker Middle 1"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Middle Note 1st going back"
+            "pathName": "Speaker 1 moves out"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "ShootOut"
+            "name": "ShootAnywhere"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "1st back to 2nd middle note"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "2nd middle note back score"
+            "pathName": "Speaker 1 move out to note"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "ShootOut"
+            "name": "ShootAnywhere"
           }
         }
       ]
     }
   },
-  "folder": "Two Piece Middle Fling",
+  "folder": "2 piece auto",
   "choreoAuto": false
 }

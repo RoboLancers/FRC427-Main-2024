@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.6987751318861041,
-      "y": 4.4544177308906
+      "x": 0.6481009581004845,
+      "y": 4.483620930830938
     },
     "rotation": -60.0
   },
@@ -11,6 +11,12 @@
     "type": "sequential",
     "data": {
       "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "GoToSpeaker"
+          }
+        },
         {
           "type": "named",
           "data": {

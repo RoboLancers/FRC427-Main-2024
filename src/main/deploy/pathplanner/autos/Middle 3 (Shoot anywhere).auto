@@ -36,9 +36,28 @@
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "Middle Note 4th going back"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Middle Note 4th going back score"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "RevBlueThird"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
           }
         }
       ]

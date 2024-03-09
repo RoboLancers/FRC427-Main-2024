@@ -5,21 +5,27 @@
       "x": 1.3057281252407118,
       "y": 5.483151617932309
     },
-    "rotation": 0
+    "rotation": 0.0
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
+          "type": "path",
+          "data": {
+            "pathName": "Speaker 2 moves out"
+          }
+        },
+        {
           "type": "named",
           "data": {
-            "name": "ShootSpeaker"
+            "name": "ShootAnywhere"
           }
         }
       ]
     }
   },
-  "folder": "Score Preload",
+  "folder": "1 piece auto",
   "choreoAuto": false
 }

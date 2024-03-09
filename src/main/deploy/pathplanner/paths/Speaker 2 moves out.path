@@ -1,0 +1,52 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 1.3057281252407118,
+        "y": 5.503726295673142
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 1.4191246981877055,
+        "y": 5.493906115624471
+      },
+      "isLocked": false,
+      "linkedName": "Speaker 2"
+    },
+    {
+      "anchor": {
+        "x": 1.748207342568533,
+        "y": 5.4761064972366915
+      },
+      "prevControl": {
+        "x": 1.4916668294875066,
+        "y": 5.436685488755594
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "speaker 2 move out"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 2.25,
+    "maxAngularVelocity": 360.0,
+    "maxAngularAcceleration": 300.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "Speaker Misc",
+  "previewStartingState": {
+    "rotation": 0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}

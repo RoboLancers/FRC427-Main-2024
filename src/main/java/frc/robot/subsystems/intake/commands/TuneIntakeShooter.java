@@ -20,7 +20,7 @@ public class TuneIntakeShooter extends Command {
     }
 
     public void execute() {
-        this.m_speed = IOUtils.get("Tune_IntakeShoot_Speed");
+        this.m_speed = IOUtils.getNumber("Tune_IntakeShoot_Speed");
     }
 
     public boolean isFinished() {
@@ -28,7 +28,7 @@ public class TuneIntakeShooter extends Command {
     }
 
     public void end(boolean interrupted) {
-
+        this.m_intake.intakeRing(0);
     }
 
 }

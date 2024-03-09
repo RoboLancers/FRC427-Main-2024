@@ -1,0 +1,67 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 1.4,
+        "y": 4.284804773642762
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 1.8902220234224218,
+        "y": 4.269424983781073
+      },
+      "isLocked": false,
+      "linkedName": "speaker 3 move out"
+    },
+    {
+      "anchor": {
+        "x": 2.281268050080585,
+        "y": 4.051088149625884
+      },
+      "prevControl": {
+        "x": 2.203362508741625,
+        "y": 4.031611764291144
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Note 3"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [
+    {
+      "name": "New Event Marker",
+      "waypointRelativePos": 0.0,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "IntakeGround"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 2.0,
+    "maxAcceleration": 1.5,
+    "maxAngularVelocity": 360.0,
+    "maxAngularAcceleration": 360.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "Speaker Misc",
+  "previewStartingState": null,
+  "useDefaultConstraints": false
+}

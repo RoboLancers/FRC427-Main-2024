@@ -16,6 +16,8 @@ import frc.robot.subsystems.arm.commands.GoToSpeaker;
 import frc.robot.subsystems.drivetrain.Drivetrain;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.intake.commands.OuttakeToSpeaker;
+import frc.robot.commands.RevAndAngle;
+import frc.robot.commands.RevAndAngleWithPose;
 
 // class to store, set up, and choose autos
 public class AutoPicker {
@@ -57,8 +59,10 @@ public class AutoPicker {
 
         registerCommands(); 
 
-
         chooser = AutoBuilder.buildAutoChooser(); 
+
+        // registerExtraAutos();
+
     }
 
     public void registerCommands() {
@@ -68,12 +72,23 @@ public class AutoPicker {
         NamedCommands.registerCommand("ShootSpeaker", new OuttakeToSpeaker());
         NamedCommands.registerCommand("ShootOut", new OuttakeToSpeaker());
         NamedCommands.registerCommand("ShootAnywhere", AutomationCommands.shootFromAnywhere());
+        NamedCommands.registerCommand("MoveToNext", new PrintCommand("Moving to next"));
+        
+        NamedCommands.registerCommand("Shoot", OuttakeToSpeaker.shoot(Intake.getInstance()).finallyDo(() -> Arm.getInstance().goToAngle(Constants.ArmConstants.kTravelPosition)));
+        NamedCommands.registerCommand("RevAndAngleAnywhere", new RevAndAngle(Arm.getInstance(), Intake.getInstance(), Drivetrain.getInstance()));
+        NamedCommands.registerCommand("RevBlueFirst", new RevAndAngleWithPose(Arm.getInstance(), Intake.getInstance(), Drivetrain.getInstance(), Constants.SetPoints.blueFirstMiddle));
+        NamedCommands.registerCommand("RevBlueSecond", new RevAndAngleWithPose(Arm.getInstance(), Intake.getInstance(), Drivetrain.getInstance(), Constants.SetPoints.blueSecondMiddle));
+        NamedCommands.registerCommand("RevBlueThird", new RevAndAngleWithPose(Arm.getInstance(), Intake.getInstance(), Drivetrain.getInstance(), Constants.SetPoints.blueThirdMiddle));
 
         // NamedCommands.registerCommand("GoToSpeaker", new PrintCommand("Going to Speaker"));
         // NamedCommands.registerCommand("IntakeGround", new PrintCommand("Intaking from ground!"));
         // NamedCommands.registerCommand("ShootSpeaker", new PrintCommand("shooting to speaker!!"));
-        // NamedCommands.registerCommand("ShootOut", new PrintCommand("Shooting out to nowhere!!!"));
+        NamedCommands.registerCommand("ShootOut", new PrintCommand("Shooting out to nowhere!!!"));
         // NamedCommands.registerCommand("ShootAnywhere", new PrintCommand("Shooting from anywhere!!!!"));
+    }
+
+    public void registerExtraAutos() {
+        chooser.addOption("JustShoot", AutomationCommands.shootFromAnywhere());
     }
 
     // gets the currently selected auto

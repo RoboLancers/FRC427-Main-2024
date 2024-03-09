@@ -18,6 +18,8 @@ import frc.robot.subsystems.intake.commands.OuttakeToSpeaker;
 import frc.robot.subsystems.intake.commands.SetShooterSpeed;
 import frc.robot.util.ChassisState;
 import frc.robot.util.DriverController;
+import frc.robot.util.GeometryUtils;
+import frc.robot.util.quad.OrderedPair;
 
 public class GeneralizedReleaseRoutine extends Command {
     
@@ -51,8 +53,13 @@ public class GeneralizedReleaseRoutine extends Command {
     // sets the driver speed to robot controller input
     public void execute() {
         Pose2d currentPose = drivetrain.getPose();
-        ShootAnywhereResult results = ShootAnywhere.getShootValues(currentPose); 
-        arm.goToAngle(results.getArmAngleDeg());
+        ShootAnywhereResult results = ShootAnywhere.getShootValues(currentPose);
+        if (!((GeometryUtils.isInBlueStage(new OrderedPair(drivetrain.getPose().getX(), drivetrain.getPose().getY()))) || (GeometryUtils.isInRedStage(new OrderedPair(drivetrain.getPose().getX(), drivetrain.getPose().getY()))))) {
+            arm.goToAngle(results.getArmAngleDeg());
+        }
+        else {
+            arm.goToAngle(Constants.ArmConstants.kTravelPosition);
+        }
         ChassisState speeds = driverController.getDesiredChassisState(); 
         speeds.omegaRadians = Math.toRadians(results.getDriveAngleDeg());
         speeds.turn = true;
@@ -73,18 +80,21 @@ public class GeneralizedReleaseRoutine extends Command {
         timer.stop();
         boolean isInRange = false;
         if (this.optAlliance.get() == DriverStation.Alliance.Blue) {
-            isInRange = drivetrain.getPose().getX() <= Constants.GeneralizedReleaseConstants.blueShootRange;
+            isInRange = (drivetrain.getPose().getX() <= Constants.GeneralizedReleaseConstants.blueShootRange) || (GeometryUtils.isInBlueStage(new OrderedPair(drivetrain.getPose().getX(), drivetrain.getPose().getY()))) || (GeometryUtils.isInRedStage(new OrderedPair(drivetrain.getPose().getX(), drivetrain.getPose().getY())));
         }
         else if (this.optAlliance.get() == DriverStation.Alliance.Red) {
-            isInRange = drivetrain.getPose().getX() >= Constants.GeneralizedReleaseConstants.redShootRange;
+            isInRange = (drivetrain.getPose().getX() >= Constants.GeneralizedReleaseConstants.redShootRange) || (GeometryUtils.isInBlueStage(new OrderedPair(drivetrain.getPose().getX(), drivetrain.getPose().getY()))) || (GeometryUtils.isInRedStage(new OrderedPair(drivetrain.getPose().getX(), drivetrain.getPose().getY())));
         }
 
         if (!isInRange || !interrupted) {
             intake.stopShoot();
+            intake.stopSuck();
             arm.goToAngle(Constants.ArmConstants.kTravelPosition);
             CommandScheduler.getInstance().schedule(DriverCommands.vibrateController(driverController.getHID(), 1));
         } else {
             Command command = OuttakeToSpeaker.shoot(intake).finallyDo(() -> {
+                intake.stopShoot();
+                intake.stopSuck();
                 arm.goToAngle(Constants.ArmConstants.kTravelPosition);
             }); 
             CommandScheduler.getInstance().schedule(command);

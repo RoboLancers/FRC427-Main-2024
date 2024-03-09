@@ -232,7 +232,7 @@ public class Arm extends SubsystemBase {
         SmartDashboard.putNumber("Arm Position (deg)", getAngle()); 
         SmartDashboard.putNumber("Arm Velocity (deg/sec)", m_armMotorRight.getVelocity());
         SmartDashboard.putNumber("Arm Error (deg)", getError());
-        SmartDashboard.putBoolean("Is Arm At Set Point", isAtAngle());
+        SmartDashboard.putBoolean("Arm At Set Point", isAtAngle());
         SmartDashboard.putString("Arm Control Type", m_ArmControlType.toString());
         SmartDashboard.putString("Arm Control State", getArmControlState().toString());
         // SmartDashboard.putBoolean("left inverted", m_armMotorLeft.getInverted()); 

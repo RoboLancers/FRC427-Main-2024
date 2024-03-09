@@ -21,7 +21,6 @@ public class TimedPattern extends LEDPattern {
     public TimedPattern(List<TimedLEDPattern> patterns) {
         super(getTotalTime(patterns)); 
         this.patterns = patterns; 
-        System.out.println(patterns);
     }
 
     private static double getTotalTime(List<TimedLEDPattern> patterns) {

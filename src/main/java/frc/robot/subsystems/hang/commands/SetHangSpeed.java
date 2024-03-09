@@ -2,25 +2,25 @@ package frc.robot.subsystems.hang.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.hang.Hang;
+import frc.robot.subsystems.hang.Hang.HangControlType;
 
-//This command will set Speed of Hang
-public class SetHangSpeed extends Command{
-    //Create Hang and Speed
-    Hang m_Hang;
-    double m_speed;
-    
-    public SetHangSpeed(Hang hang, double speed) {
-        this.m_Hang = hang;
-        this.m_speed = speed;
+public class SetHangSpeed extends Command {
+    private Hang m_Hang; 
+    private double m_velocity = 0; 
 
-        //Makes sure only one thing can run on hang at a time
+    public SetHangSpeed(Hang hang, double velocity) {
+        this.m_Hang = hang; 
+        this.m_velocity = velocity; 
+
+
         addRequirements(hang);
     }
 
-
+    
     public void initialize() {
-        m_Hang.setSpeed(m_speed);
+        m_Hang.setHangMode(HangControlType.MANUAL);
         // runs when the command is FIRST STARTED
+        m_Hang.setManualVelocity(m_velocity);
     }
 
     public void execute() {

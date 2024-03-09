@@ -62,7 +62,7 @@ public class TurnToAngle extends Command {
             // DEBUG: output the current setpoint, error, etc. to the dashboard
             SmartDashboard.putNumber("setpoint", setpoint); 
             SmartDashboard.putNumber("error", pidController.getPositionError()); 
-            SmartDashboard.putNumber("", output); 
+            SmartDashboard.putBoolean("TTA running", true); 
             SmartDashboard.putNumber("output", output); 
             SmartDashboard.putNumber("angle velo", pidController.getVelocityError()); 
 
@@ -72,6 +72,7 @@ public class TurnToAngle extends Command {
     
         @Override
         public void end(boolean interrupted) {
+             SmartDashboard.putBoolean("TTA running", false); 
             drivetrain.swerveDrive(0, 0, 0, false);
         }
     

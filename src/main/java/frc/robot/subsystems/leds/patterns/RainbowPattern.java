@@ -10,7 +10,6 @@ public class RainbowPattern extends LEDPattern {
 
     @Override
     protected void updateLEDs(AddressableLed buffer, double time) {
-        System.out.println(time);
         for (int i = 0; i < buffer.getLength(); i++) {
             buffer.setHSV(i, (int) ((i + time * buffer.getLength() / getLoopTime() ) * 180 / buffer.getLength()) % 180, 255, 128);
         }

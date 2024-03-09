@@ -36,29 +36,9 @@ public class DriverCommands {
       }), 
       vibrateController(controller, 0.5)
     )
-    .andThen(new WaitCommand(3))
+    .andThen(new WaitCommand(0.75))
     .finallyDo(() -> Led.getInstance().beamHit = false); 
   }
 
-  public static Command tuneShooting(Drivetrain drivetrain, Arm arm, Intake intake) {
-    return Commands.defer(() -> {
-        double angle = IOUtils.get("arm angle"); 
-        ShootAnywhereResult res = ShootAnywhere.getShootValues(drivetrain.getPose()); 
-        if (res == null) return Commands.none();
-        TurnToAngle turnToAngle = new TurnToAngle(drivetrain, res.getDriveAngleDeg());
 
-        return Commands.sequence(
-            turnToAngle, 
-            new GoToAngle(arm, angle),
-            Commands.runOnce(() -> {
-              drivetrain.swerveDrive(new ChassisSpeeds(), false);
-            }),
-            OuttakeToSpeaker.revAndIndex(intake).withTimeout(5),
-            OuttakeToSpeaker.shoot(intake)
-        ).finallyDo(() -> {
-          intake.stopShoot();
-          intake.stopSuck(); 
-        });
-    }, Set.of(drivetrain, arm, intake)); 
-  }
 }

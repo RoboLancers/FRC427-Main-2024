@@ -18,7 +18,7 @@ public class OuttakeToAmp extends Command {
     // starts outtaking the ring from the sucker into the shooter 
     public void initialize() {
         // runs when the command is FIRST STARTED
-        this.m_intake.outtakeRing(Constants.IntakeConstants.kAmpOuttakeSpeed);
+        this.m_intake.outtakeRing(2000);
         this.m_intake.intakeRing(Constants.IntakeConstants.kAmpOuttakeSpeed);
     }
 

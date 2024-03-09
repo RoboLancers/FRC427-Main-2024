@@ -20,7 +20,7 @@ public class TuneOuttakeSucker extends Command {
         this.m_intake.outtakeRing(m_speed);
     }
     public void execute() {
-        this.m_speed = IOUtils.get("Tune_OuttakeSuck_Speed");
+        this.m_speed = IOUtils.getNumber("Tune_OuttakeSuck_Speed"); // snake case >:(
     }
 
     public boolean isFinished() {
@@ -28,7 +28,7 @@ public class TuneOuttakeSucker extends Command {
     }
 
     public void end(boolean interrupted) {
-
+        this.m_intake.outtakeRing(0);
     }
 
 }

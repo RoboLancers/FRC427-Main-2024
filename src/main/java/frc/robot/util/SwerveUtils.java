@@ -5,6 +5,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import frc.robot.Constants;
 
 public class SwerveUtils {
 
@@ -55,5 +56,13 @@ public class SwerveUtils {
             .getTranslation()
             .rotateBy(new Rotation2d(halftheta_by_tan_of_halfdtheta, -half_dtheta));
     return new Twist2d(translation_part.getX(), translation_part.getY(), dtheta);
+  }
+
+  public static boolean isPoseValid(Pose2d pose) {
+      boolean isInLowerXLimit = -2.5 <= pose.getX();
+        boolean isInUpperXLimit = pose.getX() <= Constants.Vision.kAprilTagFieldLayout.getFieldLength() + 2.5;
+        boolean isInLowerYLimit = -2.5 <= pose.getY();
+        boolean isInUpperYLimit = pose.getY() <= Constants.Vision.kAprilTagFieldLayout.getFieldWidth() + 2.5;
+        return isInLowerXLimit && isInUpperXLimit && isInLowerYLimit && isInUpperYLimit;
   }
 }

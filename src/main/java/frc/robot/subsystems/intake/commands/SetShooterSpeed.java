@@ -46,7 +46,6 @@ public class SetShooterSpeed extends Command {
     }
 
     public static Command revAndIndex(Intake intake, double speed) {
-        return new SetShooterSpeed(intake, speed).alongWith(indexNote(intake)); 
+        return indexNote(intake).alongWith(new SetShooterSpeed(intake, speed)); 
     }
-    
 }

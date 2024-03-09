@@ -32,7 +32,7 @@ public class TunePIDGoToAngle extends Command {
         // m_arm.setKG(IOUtils.get("Arm kG", Constants.ArmConstants.kGravityFF));
         // m_arm.setKS(IOUtils.get("Arm kS", Constants.ArmConstants.kSpringFF));
 
-        m_arm.goToAngle(IOUtils.get("Arm Angle"));
+        m_arm.goToAngle(IOUtils.getNumber("Arm Angle"));
     }
 
     public boolean isFinished() {

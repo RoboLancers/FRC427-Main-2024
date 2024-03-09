@@ -20,7 +20,7 @@ public class TuneManualVelocity extends Command {
     }
 
     public void execute() {
-        m_arm.setSpeed(IOUtils.get("manual speed"));
+        m_arm.setSpeed(IOUtils.getNumber("manual speed"));
 
     }
 

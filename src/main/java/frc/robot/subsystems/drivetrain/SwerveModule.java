@@ -50,11 +50,17 @@ public class SwerveModule {
 
     private String name; 
 
+    private DriveState driveType = DriveState.CLOSED_LOOP; 
+
+    private double currentDrivePos = 0; 
+    private double lastDrivePos = 0; 
+
     /**
      * 
      * @param config the config of the corresponding swerve module
      */
     public SwerveModule(SwerveModuleConfig config) {
+
         int kTurn = config.getRotateId(); 
         int kDrive = config.getDriveId(); 
         int kTurnEncoder = config.getEncoderId();
@@ -70,6 +76,9 @@ public class SwerveModule {
 
       //  this.turnPIDController = new SwerveTurnPIDController(absoluteTurnEncoder, 0, 0, 0); 
        // this.drivePIDController = this.driveMotor.getPIDController(); 
+
+        // this.currentDrivePos = this.driveEncoder.getPosition(); 
+        // this.lastDrivePos = this.driveEncoder.getPosition();
 
         configureMotors(config.getDriveInverted(), config.getRotateInverted());
         configureEncoders(config.getAbsoluteEncoderDirection(), kOffset);
@@ -155,9 +164,31 @@ public class SwerveModule {
         // SmartDashboard.putNumber("module " + absoluteTurnEncoder.getDeviceID() + " diff speed", state.speedMetersPerSecond - this.driveMotor.getVelocity()); 
 
         this.targetState = state; 
+        this.driveType = driveType;
+
+    }
+
+    public void commandState() {
+
+        // double encPos = driveEncoder.getPosition();
+
+        // if (Math.abs(encPos - this.lastDrivePos) >= 3
+        //  || (Math.abs(encPos) <= 0.1 && Math.abs(this.lastDrivePos) > 0.1)) {
+        //     // do nothing
+        // } else {
+        //     this.currentDrivePos += encPos - this.lastDrivePos;
+        // }
+
+        // this.lastDrivePos = encPos;
+
+        if (this.targetState == null) return; 
+        // SmartDashboard.putNumber("module " + name + " position", this.driveEncoder.getPosition()); 
+        // SmartDashboard.putNumber("module " + name + " desired speed", this.targetState.speedMetersPerSecond); 
+        // SmartDashboard.putNumber("module " + name + " actual speed", this.driveEncoder.getVelocity()); 
+        // SmartDashboard.putNumber("module " + name + " diff speed", this.targetState.speedMetersPerSecond - this.driveEncoder.getVelocity()); 
 
         // optimize angles so the wheels only have to turn 90 degrees to reach their setpoint at any given time
-        SwerveModuleState optimizedState = SwerveModuleState.optimize(state, getAngle()); 
+        SwerveModuleState optimizedState = SwerveModuleState.optimize(this.targetState, getAngle()); 
 
         if (driveType == DriveState.OPEN_LOOP) updateOpenLoopDriveState(optimizedState.speedMetersPerSecond); 
          else updateClosedLoopDriveState(optimizedState.speedMetersPerSecond);
