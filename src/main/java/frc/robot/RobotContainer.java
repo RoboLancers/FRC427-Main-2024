@@ -134,10 +134,7 @@ public class RobotContainer {
   //  driverController.x()
   //  .whileTrue(AutomationCommands.pathFindToGamePiece(driverController)); // auto navigate to note
 
-    driverController.x().whileTrue(AutomationCommands.generalizedHangCommand(driverController));
-
-    
-    driverController.b().whileTrue(AutomationCommands.pathFindToGamePiece(driverController)); 
+    // driverController.x().whileTrue(AutomationCommands.generalizedHangCommand(driverController));
 
     // --- Intake --- 
 
@@ -165,8 +162,9 @@ public class RobotContainer {
       manipulatorController.rightTrigger()
       .whileTrue(AutomationCommands.autoIntakeCommand()); // intake from ground auto
 
-      driverController.x()
-      .whileTrue(AutomationCommands.pathFindToGamePiece(driverController)); 
+      // driverController.x()
+      // .whileTrue(AutomationCommands.pathFindToGamePiece(driverController)); 
+      driverController.x().whileTrue(AutomationCommands.pathFindToAmpAndScore());
 
       driverController.leftTrigger()
       .whileTrue(AutomationCommands.generalizedReleaseCommand(driverController));

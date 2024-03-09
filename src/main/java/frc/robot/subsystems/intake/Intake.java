@@ -43,7 +43,7 @@ public class Intake extends SubsystemBase {
     MotorSim m_outtakeMotorSuck = new MotorSim(Constants.IntakeConstants.kOuttakeMotorSuckId, MotorType.kBrushless, Mode.MANUAL);
     //RelativeEncoder m_outtakeEncoderSuck = m_outtakeMotorSuck.getEncoder();
 
-    SparkPIDController m_intakePidController = m_intakeMotorShootTop.getPIDController();
+    // SparkPIDController m_intakePidController = m_intakeMotorShootTop.getPIDController();
 
 
     // beambreak checks for if theres a note in the intake
@@ -72,10 +72,10 @@ public class Intake extends SubsystemBase {
     }
 
     public void setupControllers() {
-        m_intakePidController.setP(Constants.IntakeConstants.kP);
-        m_intakePidController.setI(Constants.IntakeConstants.kI);
-        m_intakePidController.setD(Constants.IntakeConstants.kD);
-        m_intakePidController.setFF(Constants.IntakeConstants.kFF);
+        // m_intakePidController.setP(Constants.IntakeConstants.kP);
+        // m_intakePidController.setI(Constants.IntakeConstants.kI);
+        // m_intakePidController.setD(Constants.IntakeConstants.kD);
+        // m_intakePidController.setFF(Constants.IntakeConstants.kFF);
     }
 
     public void periodic() {
@@ -83,7 +83,8 @@ public class Intake extends SubsystemBase {
         m_intakeMotorShootTop.update(0.02);
         m_outtakeMotorSuck.update(0.02);
         // code inside here will run repeatedly while the robot is on
-        m_intakePidController.setReference(m_desireSpeed, CANSparkBase.ControlType.kVelocity);
+        // m_intakePidController.setReference(m_desireSpeed, CANSparkBase.ControlType.kVelocity);
+        m_intakeMotorShootTop.set(m_desireSpeed);
         doSendables();
     }
     //so intaking the ring is sucking it
@@ -110,7 +111,7 @@ public class Intake extends SubsystemBase {
     }
 
     public boolean atDesiredShootSpeed() {
-        return (Math.abs(m_intakeEncoderShootTop.getVelocity() - m_desireSpeed) <= Constants.IntakeConstants.kTolerance); 
+        return (Math.abs(m_intakeMotorShootTop.getVelocity() - m_desireSpeed) <= Constants.IntakeConstants.kTolerance); 
     }
 
      public void doSendables() { 

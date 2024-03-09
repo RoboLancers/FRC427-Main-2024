@@ -54,7 +54,10 @@ public class GeneralizedReleaseRoutine extends Command {
     public void execute() {
         Pose2d currentPose = drivetrain.getPose();
         ShootAnywhereResult results = ShootAnywhere.getShootValues(currentPose);
-        if (!((GeometryUtils.isInBlueStage(new OrderedPair(drivetrain.getPose().getX(), drivetrain.getPose().getY()))) || (GeometryUtils.isInRedStage(new OrderedPair(drivetrain.getPose().getX(), drivetrain.getPose().getY()))))) {
+
+        boolean restrictedFromShooting = GeometryUtils.isInBlueStage(OrderedPair.fromPose2d(currentPose)) || GeometryUtils.isInRedStage(OrderedPair.fromPose2d(currentPose)) || (drivetrain.getPose().getX() >= Constants.GeneralizedReleaseConstants.blueShootRange && drivetrain.getPose().getX() <= Constants.GeneralizedReleaseConstants.redShootRange); 
+
+        if (!restrictedFromShooting) {
             arm.goToAngle(results.getArmAngleDeg());
         }
         else {
