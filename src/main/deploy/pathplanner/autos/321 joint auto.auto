@@ -24,28 +24,33 @@
           }
         },
         {
-          "type": "parallel",
+          "type": "path",
           "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Middle Note 4th going back score"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "RevBlueThird"
-                }
-              }
-            ]
+            "pathName": "MN4 going back"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "ShootAnywhere"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "MN4 going to MN3"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "MN3 going back"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootAnywhere"
           }
         }
       ]

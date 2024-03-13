@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.4370791327585035,
-        "y": 6.9920223351715975
+        "x": 7.622154191676804,
+        "y": 4.0429241760739165
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.5549534322481375,
-        "y": 7.089982875626213
+        "x": 7.4987061252317995,
+        "y": 4.0634988538147505
       },
       "isLocked": false,
-      "linkedName": "Note 1"
+      "linkedName": "Middle Note 3"
     },
     {
       "anchor": {
-        "x": 1.3057281252407118,
-        "y": 5.503726295673142
+        "x": 7.035775876063031,
+        "y": 4.0429241760739165
       },
       "prevControl": {
-        "x": 1.5466283501489315,
-        "y": 5.788529565870021
+        "x": 7.076925231544699,
+        "y": 4.0429241760739165
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Speaker 2"
+      "linkedName": "MN3 going back"
     }
   ],
   "rotationTargets": [],
@@ -33,7 +33,7 @@
   "eventMarkers": [
     {
       "name": "New Event Marker",
-      "waypointRelativePos": 0.5,
+      "waypointRelativePos": 0.3,
       "command": {
         "type": "parallel",
         "data": {
@@ -41,7 +41,7 @@
             {
               "type": "named",
               "data": {
-                "name": "GoToSpeaker"
+                "name": "IntakeGround"
               }
             }
           ]
@@ -61,7 +61,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Speaker Note",
+  "folder": "Middle Back",
   "previewStartingState": null,
   "useDefaultConstraints": true
 }

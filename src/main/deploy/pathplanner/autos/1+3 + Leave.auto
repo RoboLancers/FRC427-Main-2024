@@ -24,15 +24,28 @@
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "Note to Speaker 2"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Note to Speaker 2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "RevBlueCenter"
+                }
+              }
+            ]
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "ShootSpeaker"
+            "name": "Shoot"
           }
         },
         {
@@ -42,15 +55,28 @@
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "Note 3 to Speaker 2"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Note 3 to Speaker 2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "RevBlueCenter"
+                }
+              }
+            ]
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "ShootSpeaker"
+            "name": "Shoot"
           }
         },
         {
@@ -60,15 +86,28 @@
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "Note 1 to Speaker 2"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Note 1 to Speaker 2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "RevBlueCenter"
+                }
+              }
+            ]
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "ShootSpeaker"
+            "name": "Shoot"
           }
         }
       ]

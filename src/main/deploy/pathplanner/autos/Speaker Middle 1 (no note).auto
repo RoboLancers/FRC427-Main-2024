@@ -12,6 +12,12 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "ShootSpeaker"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Speaker Middle 1 (avoid note)"

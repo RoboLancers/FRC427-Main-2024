@@ -430,6 +430,7 @@ public final class Constants {
     public static final Pose2d blueThirdMiddle = new Pose2d(2.55, 3.15,null);
     public static final Pose2d blueSecondMiddle = new Pose2d(3.59, 5.80, null);
     public static final Pose2d blueFirstMiddle = new Pose2d(3.38, 7.02, null);
+    public static final Pose2d blueCenter = new Pose2d(1.31, 5.50, null);
 
   }
 }
