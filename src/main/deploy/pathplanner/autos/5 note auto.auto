@@ -60,15 +60,28 @@
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "Middle Note 1st going back"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Middle Note 1st going back"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "RevBlueFirst"
+                }
+              }
+            ]
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "ShootAnywhere"
+            "name": "Shoot"
           }
         }
       ]

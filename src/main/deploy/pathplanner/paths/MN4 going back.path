@@ -8,47 +8,29 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.3752580587867955,
-        "y": 2.3352259235846793
+        "x": 5.379514317920978,
+        "y": 1.7076982524822495
       },
       "isLocked": false,
       "linkedName": "Middle Note 4"
     },
     {
       "anchor": {
-        "x": 6.469972238190091,
-        "y": 2.1912031793988405
+        "x": 2.55049612856118,
+        "y": 3.1479256943476295
       },
       "prevControl": {
-        "x": 7.118074587026367,
-        "y": 2.304363906973428
+        "x": 3.167736460786205,
+        "y": 2.3455132624550967
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "MN4 going back"
+      "linkedName": "Middle 4 Back"
     }
   ],
   "rotationTargets": [],
   "constraintZones": [],
-  "eventMarkers": [
-    {
-      "name": "New Event Marker",
-      "waypointRelativePos": 0.45,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "GoToSpeaker"
-              }
-            }
-          ]
-        }
-      }
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 2.25,
@@ -57,7 +39,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0,
+    "rotation": -60.0,
     "rotateFast": false
   },
   "reversed": false,

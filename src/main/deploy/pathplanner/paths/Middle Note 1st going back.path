@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.997910213829907,
-        "y": 7.3922574385433135
+        "x": 7.817613630214729,
+        "y": 7.468608019922806
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.490546915930924,
-        "y": 7.417171325570721
+        "x": 6.310250332315746,
+        "y": 7.493521906950214
       },
       "isLocked": false,
       "linkedName": "Middle Note 1"
@@ -39,7 +39,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0,
+    "rotation": 60.0,
     "rotateFast": false
   },
   "reversed": false,

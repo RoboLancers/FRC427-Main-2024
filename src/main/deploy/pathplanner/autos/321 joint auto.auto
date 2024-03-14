@@ -24,15 +24,28 @@
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "MN4 going back"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "RevBlueThird"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "MN4 going back"
+                }
+              }
+            ]
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "ShootAnywhere"
+            "name": "Shoot"
           }
         },
         {
@@ -42,15 +55,59 @@
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "MN3 going back"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "RevOut"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "MN3 going back"
+                }
+              }
+            ]
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "ShootAnywhere"
+            "name": "Shoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "MN3 going to MN2"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "MN2 going back"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "RevOut"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
           }
         }
       ]

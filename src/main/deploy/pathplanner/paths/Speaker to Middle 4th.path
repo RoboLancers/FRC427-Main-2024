@@ -8,24 +8,24 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.6987751318861041,
-        "y": 2.97304093355054
+        "x": 1.501187563778637,
+        "y": 3.045052305643458
       },
       "isLocked": false,
       "linkedName": "Speaker 3"
     },
     {
       "anchor": {
-        "x": 5.338364962444211,
-        "y": 1.9237323687679957
+        "x": 5.358939640185045,
+        "y": 2.11919180730592
       },
       "prevControl": {
-        "x": 4.659400596996683,
-        "y": 1.9545943853792473
+        "x": 4.679404844166616,
+        "y": 2.105867595619284
       },
       "nextControl": {
-        "x": 5.718603894523295,
-        "y": 1.906448780946219
+        "x": 6.408248204967588,
+        "y": 2.139766485046755
       },
       "isLocked": false,
       "linkedName": null
@@ -49,7 +49,7 @@
   "eventMarkers": [
     {
       "name": "New Event Marker",
-      "waypointRelativePos": 1.55,
+      "waypointRelativePos": 1.05,
       "command": {
         "type": "parallel",
         "data": {
