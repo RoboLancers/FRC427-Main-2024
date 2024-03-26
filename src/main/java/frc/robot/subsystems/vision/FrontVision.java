@@ -90,5 +90,4 @@ public class FrontVision extends SubsystemBase {
 
         return forwardDist * Math.sin(yaw) / Math.sin(alpha); 
     }
-
 }

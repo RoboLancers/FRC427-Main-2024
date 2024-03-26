@@ -2,8 +2,10 @@ package frc.robot.commands;
 
 import java.util.Optional;
 import java.util.Set; 
+import java.util.function.Consumer; 
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -16,45 +18,36 @@ import frc.robot.subsystems.drivetrain.Drivetrain;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.intake.commands.SetShooterSpeed;
 
-public class RevAndAngleWithPose extends Command {
+public class RevAndAngleWithPose extends RevAndAngle {
 
     public Arm arm;
     public Intake intake;
-    public Optional<Alliance> optAlliance;
     public Pose2d targetPose;
-
-    public RevAndAngleWithPose(Arm arm, Intake intake, Pose2d targetPose) {
-        this.arm = arm;
-        this.intake = intake;
-        this.targetPose = targetPose;
+    public RevAndAngleWithPose(Arm arm, Intake intake, Pose2d target, Consumer<Rotation2d> rotation) {
+        super(arm, intake, rotation); 
+        this.targetPose = target;
 
         addRequirements(arm, intake);
     }
 
     public void initialize() {
-        this.optAlliance = DriverStation.getAlliance();
+        super.initialize();
 
         if (optAlliance.isPresent() && optAlliance.get() == Alliance.Red) {
             targetPose = new Pose2d(Constants.Vision.kAprilTagFieldLayout.getFieldLength() - targetPose.getX(), targetPose.getY(), targetPose.getRotation());
         }
-
-        CommandScheduler.getInstance().schedule(SetShooterSpeed.indexNote(intake));
     }
 
     public void execute() {
-        ShootAnywhereResult res = ShootAnywhere.getShootValues(targetPose); 
-
-        if (res == null) return; 
-
-        arm.goToAngle(res.getArmAngleDeg());
-        intake.outtakeRing(res.getOuttakeSpeed());
+        super.execute();
     }
 
-    public boolean isFinished() {
-        return optAlliance.isEmpty() || Constants.GeneralizedReleaseConstants.readyToShootAuto.getAsBoolean();
+    public static Command createCommand(Arm arm, Intake intake, Pose2d targetPose, Consumer<Rotation2d> rotationConsumer) {
+        return Commands.defer(() -> new RevAndAngleWithPose(arm, intake, targetPose, rotationConsumer), Set.of(arm, intake)).andThen(Commands.idle()).finallyDo(() -> 
+        rotationConsumer.accept(null)); 
     }
-
-    public static Command createCommand(Arm arm, Intake intake, Pose2d targetPose) {
-        return Commands.defer(() -> new RevAndAngleWithPose(arm, intake, targetPose), Set.of(arm, intake)); 
+    
+    protected Pose2d getTarget() {
+        return this.targetPose;
     }
 } 

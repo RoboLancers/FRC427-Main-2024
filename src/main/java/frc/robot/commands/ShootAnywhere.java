@@ -65,6 +65,8 @@ public class ShootAnywhere {
          *  - target drive & arm speaker w/ offset
          */
 
+         System.out.println(currentPose);
+
         if (alliance == DriverStation.Alliance.Blue) {
             // targetPose = Constants.GeneralizedReleaseConstants.kBlueAllianceSpeaker;
             // targetPose = Constants.GeneralizedReleaseConstants.kBlueAllianceSpeakerTarget;
