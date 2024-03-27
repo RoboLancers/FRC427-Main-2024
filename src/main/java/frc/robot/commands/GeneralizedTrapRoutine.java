@@ -1,44 +1,41 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
-
-import java.util.Optional;
-
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants;
 import frc.robot.subsystems.arm.Arm;
 import frc.robot.subsystems.drivetrain.Drivetrain;
 import frc.robot.subsystems.hang.Hang;
-import frc.robot.subsystems.hang.commands.SetHangSpeed;
+import frc.robot.subsystems.intake.Intake;
+import frc.robot.subsystems.intake.commands.OuttakeToSpeaker;
+import frc.robot.subsystems.leds.Led;
 import frc.robot.util.ChassisState;
 import frc.robot.util.DriverController;
 import frc.robot.util.GeometryUtils;
-import frc.robot.util.quad.OrderedPair;
-import frc.robot.util.quad.Quadrilateral;
 
-public class GeneralizedHangRoutine extends Command {
+public class GeneralizedTrapRoutine extends Command {
     
     public DriverController driverController;
     public Drivetrain drivetrain;
     public Arm arm;
+    private Intake intake; 
     public Hang hang; 
     private double angleToTurn; 
 
-    public GeneralizedHangRoutine(DriverController driverController, Drivetrain drivetrain, Arm arm, Hang hang) {
+    public GeneralizedTrapRoutine(DriverController driverController, Drivetrain drivetrain, Arm arm, Intake intake) {
         this.arm = arm; 
-        this.hang = hang;
         this.driverController = driverController;
         this.drivetrain = drivetrain;
+        this.intake = intake; 
 
         addRequirements(drivetrain, hang); 
     }
 
     public void initialize() {
         this.angleToTurn = GeometryUtils.getAngleToStage(drivetrain.getPose()); 
-
+        this.arm.goToAngle(Constants.ArmConstants.kTrapPosition);
+        this.intake.outtakeRing(Constants.IntakeConstants.kTrapSpeed);
+        Led.getInstance().isShooting = true; 
         // this.hang.setTargetPosition(Constants.HangConstants.kHangMaxUp);
     }
 
@@ -59,13 +56,13 @@ public class GeneralizedHangRoutine extends Command {
     }
 
     public void end(boolean interrupted) {
+        Led.getInstance().isShooting = false; 
         // this.hang.setTargetPosition(Constants.HangConstants.kHangInitial);
-    }
-
-    public static Command primeHang(Hang hang) {
-        return new SetHangSpeed(hang, 0.5).alongWith(Commands.waitUntil(() -> 
-            hang.getMotorCurrent() >= Constants.HangConstants.kHookStallCurrent && Math.abs(hang.getHangVelocity()) <= Constants.HangConstants.kMinSpeed
-        ))
-        .andThen(new SetHangSpeed(hang, 0)); 
+        Command command = OuttakeToSpeaker.shoot(intake).finallyDo(() -> {
+                intake.stopShoot();
+                intake.stopSuck();
+                arm.goToAngle(Constants.ArmConstants.kTravelPosition);
+            }); 
+        CommandScheduler.getInstance().schedule(command);
     }
 }
