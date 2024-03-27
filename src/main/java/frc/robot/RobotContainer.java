@@ -24,12 +24,14 @@ import frc.robot.subsystems.intake.commands.IntakeFromGround;
 import frc.robot.subsystems.intake.commands.OuttakeToAmp;
 import frc.robot.subsystems.intake.commands.OuttakeToSpeaker;
 import frc.robot.util.DriverController;
+import frc.robot.util.IOUtils;
 import frc.robot.util.DriverController.Mode;
 import frc.robot.subsystems.leds.Led;
 import frc.robot.subsystems.vision.FrontVision;
 import frc.robot.subsystems.vision.Vision_old;
 
 import java.util.Optional;
+import java.util.Set;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -123,7 +125,11 @@ public class RobotContainer {
     ); 
 
     // TODO: tune
-    driverController.y().whileTrue(TuningCommands.tuneShooting(drivetrain, arm, intake)); 
+    // driverController.y().whileTrue(TuningCommands.tuneShooting(drivetrain, arm, intake)); 
+    driverController.y().whileTrue(Commands.defer(() -> Commands.parallel(OuttakeToSpeaker.revAndIndex(intake, IOUtils.get("TuneShot/RevSpeed", 0)), new GoToAngle(arm, IOUtils.get("TuneShoot/ArmAngle", 0))).until(Constants.GeneralizedReleaseConstants.readyToShootAuto).andThen(OuttakeToSpeaker.shoot(intake, 0.5)
+    .andThen(Commands.runOnce(() -> {
+      arm.goToAngle(Constants.ArmConstants.kTravelPosition);
+    }))), Set.of(intake, arm)));
 
     // TODO: tune
     // driverController.y().whileTrue(new TuneTurnToAngle(drivetrain)); 
