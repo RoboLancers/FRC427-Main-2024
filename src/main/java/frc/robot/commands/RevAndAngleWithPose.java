@@ -1,9 +1,11 @@
 package frc.robot.commands;
 
 import java.util.Optional;
-import java.util.Set; 
+import java.util.Set;
+import java.util.function.Consumer;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -57,5 +59,24 @@ public class RevAndAngleWithPose extends Command {
 
     public static Command createCommand(Arm arm, Intake intake, Pose2d targetPose) {
         return Commands.defer(() -> new RevAndAngleWithPose(arm, intake, targetPose), Set.of(arm, intake)).withTimeout(2); 
+    }
+
+    public static Command createRotationCommand(Pose2d pose, Consumer<Rotation2d> setRotation) {
+        return Commands.defer(() -> {
+            Pose2d targetPose = pose; 
+            Optional<Alliance> optAlliance = DriverStation.getAlliance(); 
+            if (optAlliance.isPresent() && optAlliance.get() == Alliance.Red) {
+                targetPose = new Pose2d(Constants.Vision.kAprilTagFieldLayout.getFieldLength() - targetPose.getX(), targetPose.getY(), targetPose.getRotation());
+            }
+            ShootAnywhereResult res = ShootAnywhere.getShootValues(targetPose);
+            return Commands.startEnd(
+                () -> {
+                    setRotation.accept(Rotation2d.fromDegrees(res.getDriveAngleDeg()));
+                }, 
+                () -> {
+                    setRotation.accept(null);
+                }
+            );
+        }, Set.of()); 
     }
 } 

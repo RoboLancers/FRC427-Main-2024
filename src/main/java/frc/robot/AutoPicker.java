@@ -1,20 +1,21 @@
 package frc.robot;
 
+import java.util.Optional;
+import java.util.function.Consumer;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.path.PathPlannerPath;
-import com.pathplanner.lib.path.PathPlannerTrajectory;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
-import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import frc.robot.commands.AutomationCommands;
-import frc.robot.commands.ShootAnywhere;
 import frc.robot.subsystems.arm.Arm;
 import frc.robot.subsystems.arm.commands.GoToAngle;
 import frc.robot.subsystems.arm.commands.GoToSpeaker;
@@ -30,6 +31,8 @@ public class AutoPicker {
     private SendableChooser<Command> chooser; 
 
     Drivetrain m_driveSubsystem;
+
+    private Rotation2d rotationOverride = null; 
     
     public AutoPicker(Drivetrain driveSubsystem) {
         m_driveSubsystem = driveSubsystem;
@@ -63,6 +66,11 @@ public class AutoPicker {
             driveSubsystem // The drive subsystem. Used to properly set the requirements of path following commands
         );
 
+        PPHolonomicDriveController.setRotationTargetOverride(() -> {
+            System.out.println(this.rotationOverride);
+            return this.rotationOverride == null ? Optional.empty() : Optional.of(this.rotationOverride); 
+        });
+
         registerCommands(); 
 
         chooser = AutoBuilder.buildAutoChooser(); 
@@ -72,6 +80,9 @@ public class AutoPicker {
     }
 
     public void registerCommands() {
+
+        Consumer<Rotation2d> rotationConsumer = (rot) -> this.rotationOverride = rot; 
+
         // eg. NamedCommands.registerCommand("intake_cube", new IntakeForTime(intake, 1, 2)); 
         NamedCommands.registerCommand("GoToSpeaker", new GoToSpeaker(Arm.getInstance()));
         NamedCommands.registerCommand("IntakeGround", AutomationCommands.autoIntakeCommand(0.5).withTimeout(3));
@@ -89,6 +100,7 @@ public class AutoPicker {
         NamedCommands.registerCommand("RevOut", new GoToAngle(Arm.getInstance(), 20).alongWith(new SetShooterSpeed(Intake.getInstance(), 2400, 2400)));
         NamedCommands.registerCommand("AutomaticallyPickupNote", AutomationCommands.pickupNote());
 
+        NamedCommands.registerCommand("AngleBlueFirst", RevAndAngleWithPose.createRotationCommand(Constants.SetPoints.blueFirstMiddle, rotationConsumer));
 
 
 

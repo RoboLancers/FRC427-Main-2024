@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 5.358939640185045,
-        "y": 2.11919180730592
+        "x": 5.6160489244055425,
+        "y": 1.489908364432114
       },
       "prevControl": {
-        "x": 4.679404844166616,
-        "y": 2.105867595619284
+        "x": 4.9549637560813595,
+        "y": 1.4997753072429225
       },
       "nextControl": {
-        "x": 6.408248204967588,
-        "y": 2.139766485046755
+        "x": 6.751778555985701,
+        "y": 1.4729571759010673
       },
       "isLocked": false,
       "linkedName": null
@@ -77,7 +77,7 @@
     "rotateFast": true
   },
   "reversed": false,
-  "folder": "Note Middle",
+  "folder": "Speaker Middle",
   "previewStartingState": {
     "rotation": -60.0,
     "velocity": 0

@@ -61,7 +61,10 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Middle Back",
-  "previewStartingState": null,
+  "folder": "Speaker Middle",
+  "previewStartingState": {
+    "rotation": -60.0,
+    "velocity": 0
+  },
   "useDefaultConstraints": true
 }

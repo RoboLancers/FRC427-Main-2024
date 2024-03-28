@@ -14,7 +14,7 @@
         {
           "type": "named",
           "data": {
-            "name": "ShootSpeaker"
+            "name": "ShootAnywhere"
           }
         },
         {
@@ -28,15 +28,15 @@
           "data": {
             "commands": [
               {
-                "type": "named",
-                "data": {
-                  "name": "RevBlueThird"
-                }
-              },
-              {
                 "type": "path",
                 "data": {
                   "pathName": "MN4 going back"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "RevBlueThird"
                 }
               }
             ]
@@ -59,15 +59,15 @@
           "data": {
             "commands": [
               {
-                "type": "named",
-                "data": {
-                  "name": "RevOut"
-                }
-              },
-              {
                 "type": "path",
                 "data": {
                   "pathName": "MN3 going back"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "RevOut"
                 }
               }
             ]

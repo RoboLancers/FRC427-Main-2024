@@ -20,12 +20,10 @@
     "1+2",
     "1+3",
     "Archive",
+    "Fling",
     "Leave Autos",
     "Score Preload",
-    "Shoot anywhere",
-    "Testing",
-    "Fling",
-    "TwoPieceReturn"
+    "Testing"
   ],
   "defaultMaxVel": 3.5,
   "defaultMaxAccel": 2.25,
