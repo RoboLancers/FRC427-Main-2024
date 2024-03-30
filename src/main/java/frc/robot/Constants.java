@@ -178,6 +178,7 @@ public final class Constants {
     public static final double kShootSuckerSpeed = 0.4; 
     public static final double kShootRevTime = 1; 
     public static final double kShootWaitTime = 0.5; 
+    public static final double kTrapSpeed = 4000; 
 
     public static final double kAmpOuttakeSpeed = 0.25;
     public static final int kSuckerManualSpeed = 0;
@@ -223,6 +224,7 @@ public final class Constants {
     public static final double kTravelPosition = 20;
     public static final double kAmpPosition = 90;
     public static final double kSpeakerPosition = 20;
+    public static final double kTrapPosition = 10; 
 
     public static final double kTravelSpeed = 0.5;
 
