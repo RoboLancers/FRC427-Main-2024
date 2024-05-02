@@ -87,10 +87,10 @@ public final class Constants {
     public static final double kMaxAttainableRotationRadPerSecond = kMaxAttainableModuleSpeedMetersPerSecond /
     Math.hypot(kTrackWidthMeters / 2.0, kWheelBaseMeters / 2.0); // max rotation of robot
     
-    public static double kMaxSpeedMetersPerSecond = 4.6; // max velocity (no turning) of robot; may tune to be a fraction of the attainable module speed
+    public static double kMaxSpeedMetersPerSecond = 0.85; // max velocity (no turning) of robot; may tune to be a fraction of the attainable module speed
     public static double kMaxSlowSpeedMetersPerSecond = 1.0; 
     public static final double kMaxAccelerationMetersPerSecondSquared = kMaxSpeedMetersPerSecond / 0.05; // max acceleration of robot (accelerate to max speed in 1 second)
-    public static double kMaxRotationRadPerSecond = 4.50; // 3.00; // max rotation speed of the robot
+    public static double kMaxRotationRadPerSecond = 2.50; // 3.00; // max rotation speed of the robot
     public static final double kMaxSlowRotationRadPerSecond = Math.PI / 2; 
     public static final double kMaxRotationAccelerationRadPerSecondSquared = kMaxRotationRadPerSecond / 0.001; // max angular acceleration of robot
 
@@ -429,33 +429,45 @@ public final class Constants {
       // flywheelInterpolationMap.put(2.631287, 2600.0);
       // flywheelInterpolationMap.put(3.00, 2800.0);
 
-      armInterpolationMap.put(1.236991, 19.0);
-      armInterpolationMap.put(1.475904, 22.0);
-      armInterpolationMap.put(1.731548, 27.0);
-      armInterpolationMap.put(1.945692, 30.0);
-      armInterpolationMap.put(2.160266, 32.0);
-      armInterpolationMap.put(2.346438, 34.75);
-      armInterpolationMap.put(2.551097, 36.75);
-      armInterpolationMap.put(2.780076, 38.0);
-      armInterpolationMap.put(3.013878, 40.0);
-      armInterpolationMap.put(3.179525, 41.75);
-      armInterpolationMap.put(3.395265, 42.65);
-      armInterpolationMap.put(3.597070, 43.85);
+      // armInterpolationMap.put(1.236991, 19.0);
+      // armInterpolationMap.put(1.475904, 22.0);
+      // armInterpolationMap.put(1.731548, 27.0);
+      // armInterpolationMap.put(1.945692, 30.0);
+      // armInterpolationMap.put(2.160266, 32.0);
+      // armInterpolationMap.put(2.346438, 34.75);
+      // armInterpolationMap.put(2.551097, 36.75);
+      // armInterpolationMap.put(2.780076, 38.0);
+      // armInterpolationMap.put(3.013878, 40.0);
+      // armInterpolationMap.put(3.179525, 41.75);
+      // armInterpolationMap.put(3.395265, 42.65);
+      // armInterpolationMap.put(3.597070, 43.85);
 
-      flywheelInterpolationMap.put(1.236991, 2400.0);
-      flywheelInterpolationMap.put(1.475904, 2400.0);
-      flywheelInterpolationMap.put(1.731548, 2400.0);
-      flywheelInterpolationMap.put(1.945692, 2500.0);
-      flywheelInterpolationMap.put(2.160266, 2500.0);
-      flywheelInterpolationMap.put(2.346438, 2550.0);
-      flywheelInterpolationMap.put(2.551097, 2550.0);
-      flywheelInterpolationMap.put(2.780076, 2650.0);
-      flywheelInterpolationMap.put(3.013878, 2650.0);
-      flywheelInterpolationMap.put(3.179525, 2775.0);
-      flywheelInterpolationMap.put(3.395265, 3000.0);
-      flywheelInterpolationMap.put(3.597070, 3200.0);
+      // flywheelInterpolationMap.put(1.236991, 2400.0);
+      // flywheelInterpolationMap.put(1.475904, 2400.0);
+      // flywheelInterpolationMap.put(1.731548, 2400.0);
+      // flywheelInterpolationMap.put(1.945692, 2500.0);
+      // flywheelInterpolationMap.put(2.160266, 2500.0);
+      // flywheelInterpolationMap.put(2.346438, 2550.0);
+      // flywheelInterpolationMap.put(2.551097, 2550.0);
+      // flywheelInterpolationMap.put(2.780076, 2650.0);
+      // flywheelInterpolationMap.put(3.013878, 2650.0);
+      // flywheelInterpolationMap.put(3.179525, 2775.0);
+      // flywheelInterpolationMap.put(3.395265, 3000.0);
+      // flywheelInterpolationMap.put(3.597070, 3200.0);
 
+      armInterpolationMap.put(1.217, 17.0); 
+      armInterpolationMap.put(1.589, 19.0); 
+      armInterpolationMap.put(2.079, 28.0); 
+      armInterpolationMap.put(2.450, 37.0); 
+      armInterpolationMap.put(2.782, 41.0);
+      armInterpolationMap.put(3.329, 43.5);
 
+      flywheelInterpolationMap.put(1.217, 2400.0);
+      flywheelInterpolationMap.put(1.589, 2400.0);
+      flywheelInterpolationMap.put(2.079, 2400.0);
+      flywheelInterpolationMap.put(2.450, 2900.0);
+      flywheelInterpolationMap.put(2.782, 2900.0);
+      flywheelInterpolationMap.put(3.329, 3100.0);
       
       
       
