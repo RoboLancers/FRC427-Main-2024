@@ -50,8 +50,8 @@ public class TeleOpCommand extends Command {
 
         // FieldState oldState = this.fieldState; 
         // updateFieldState(optAlliance.get());
-        // Constants.DrivetrainConstants.kMaxRotationRadPerSecond = SmartDashboard.getNumber("Rotation Speed", 3.14);
-        // Constants.DrivetrainConstants.kMaxSpeedMetersPerSecond = SmartDashboard.getNumber("Linear Speed", 1.0);
+        Constants.DrivetrainConstants.kMaxRotationRadPerSecond = SmartDashboard.getNumber("Rotation Speed", 3.14);
+        Constants.DrivetrainConstants.kMaxSpeedMetersPerSecond = SmartDashboard.getNumber("Linear Speed", 1.0);
         // ensure driving does not break if gyro disconnects, will hopefully transition to robot oriented drive
        
         if (SmartDashboard.getBoolean("snap", true)) {
