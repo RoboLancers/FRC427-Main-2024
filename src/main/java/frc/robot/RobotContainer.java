@@ -55,7 +55,7 @@ public class RobotContainer {
   // intake of the bot
   private final Intake intake = Intake.getInstance(); 
 
-  // private final Vision_old vision = Vision_old.getInstance();
+  private final Vision_old vision = Vision_old.getInstance();
 
   // leds!
   private final Led led = Led.getInstance(); 
@@ -63,7 +63,7 @@ public class RobotContainer {
 
   // limelight subsystem of robot
   // private final BackVision backVision = BackVision.getInstance();
-  // private final FrontVision frontVision = FrontVision.getInstance(); 
+  private final FrontVision frontVision = FrontVision.getInstance(); 
 
   // hang mechanism of robot
   // private final Hang hang = Hang.getInstance();
@@ -163,17 +163,17 @@ public class RobotContainer {
     manipulatorController.leftBumper().and(() -> arm.getArmControlState() == ArmControlState.GROUND)
     .whileTrue(new IntakeFromGround(intake));
 
-    // driverController.rightTrigger()
-    // .whileTrue(AutomationCommands.autoIntakeCommand()); // intake from ground auto
+    driverController.rightTrigger()
+    .whileTrue(AutomationCommands.autoIntakeCommand()); // intake from ground auto
 
-    // driverController.x()
-    // .whileTrue(AutomationCommands.pathFindToGamePiece(driverController)); 
+    driverController.x()
+    .whileTrue(AutomationCommands.pathFindToGamePiece(driverController)); 
 
     // driverController.a()
     // .whileTrue(AutomationCommands.pathFindToAmpAndMoveArm());
 
-    // driverController.leftTrigger()
-    // .whileTrue(AutomationCommands.generalizedReleaseCommand(driverController));
+    driverController.leftTrigger()
+    .whileTrue(AutomationCommands.generalizedReleaseCommand(driverController));
 
 
 

@@ -26,7 +26,7 @@ public class DriverController extends CommandXboxController {
         SLOW
     }
     
-    private Mode mode = Mode.SLOW;
+    private Mode mode = Mode.NORMAL;
 
     private Supplier<ChassisSpeeds> chassisSpeedsSupplier = () -> null; 
     private Supplier<Double> maxSpeed = () -> mode == Mode.NORMAL ? Constants.DrivetrainConstants.kMaxSpeedMetersPerSecond : Constants.DrivetrainConstants.kMaxSlowSpeedMetersPerSecond;   

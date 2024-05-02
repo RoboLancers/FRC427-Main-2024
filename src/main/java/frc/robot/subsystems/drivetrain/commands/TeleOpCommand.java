@@ -35,8 +35,8 @@ public class TeleOpCommand extends Command {
     @Override
     public void initialize() {
         if (!SmartDashboard.containsKey("snap")) SmartDashboard.putBoolean("snap", false);
-        // if (!SmartDashboard.containsKey("Rotation Speed")) SmartDashboard.putNumber("Rotation Speed", 3.14);
-        // if (!SmartDashboard.containsKey("Linear Speed")) SmartDashboard.putNumber("Linear Speed", 1.0);
+        if (!SmartDashboard.containsKey("Rotation Speed")) SmartDashboard.putNumber("Rotation Speed", 3.14);
+        if (!SmartDashboard.containsKey("Linear Speed")) SmartDashboard.putNumber("Linear Speed", 1.0);
         // SmartDashboard.putBoolean("Auto Snap At Source", true); 
         m_drivetrain.resetLastTurnedTheta(); 
     }

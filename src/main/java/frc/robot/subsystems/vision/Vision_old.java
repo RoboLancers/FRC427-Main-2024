@@ -21,10 +21,10 @@ import edu.wpi.first.wpilibj.Timer;
 public class Vision_old extends SubsystemBase {
 
     
-    private static Vision_old instance; //  = new Vision_old(Drivetrain.getInstance());
+    private static Vision_old instance = new Vision_old(Drivetrain.getInstance());
 
     public static Vision_old getInstance() {
-        return null; 
+        return instance; 
     }
 
     private static NetworkTable limelightNT = NetworkTableInstance.getDefault().getTable("limelight");
@@ -97,7 +97,7 @@ public class Vision_old extends SubsystemBase {
         // if (getAprilTagPos(getClosestAprilTagID()) != null) SmartDashboard.putNumber("LimelightNearestAprilTagPositionY", getAprilTagPos(getClosestAprilTagID()).getY());
         // if (getAprilTagPos(getClosestAprilTagID()) != null) SmartDashboard.putNumber("LimelightNearestAprilTagPositionZ", getAprilTagPos(getClosestAprilTagID()).getZ());
 
-        // if (getAprilTagPos(getClosestAprilTagID()) != null) addVisionFromDrivetrain();
+        if (getAprilTagPos(getClosestAprilTagID()) != null) addVisionFromDrivetrain();
     }
 
     // Calculates the stand deviation of the distance of the object
