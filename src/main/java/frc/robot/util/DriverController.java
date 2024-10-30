@@ -4,6 +4,7 @@ import java.util.function.Supplier;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants;
 
@@ -65,9 +66,25 @@ public class DriverController extends CommandXboxController {
         double throttleForward = -getLeftStickY();
         double throttleStrafe = -getLeftStickX();
         double throttleTurn = -getRightStickX(); 
+
         
-        double speedForward = ControllerUtils.squareKeepSign(throttleForward) * maxSpeed.get(); 
-        double speedStrafe = ControllerUtils.squareKeepSign(throttleStrafe) * maxSpeed.get(); 
+            if (SmartDashboard.getBoolean("Flip Drive", false)) {
+                throttleForward *= -1; 
+                throttleStrafe *= -1; 
+            }
+
+        
+        
+        // double speedForward = ControllerUtils.squareKeepSign(throttleForward) * maxSpeed.get(); 
+        // double speedStrafe = ControllerUtils.squareKeepSign(throttleStrafe) * maxSpeed.get(); 
+        // double speedTurn = ControllerUtils.squareKeepSign(throttleTurn) * maxRotation.get(); 
+
+        
+        double totalSpeed = ControllerUtils.squareKeepSign(Math.hypot(throttleForward, throttleStrafe)) * maxSpeed.get(); 
+        double angle = Math.atan2(throttleForward, throttleStrafe);
+        
+        double speedForward = totalSpeed * Math.sin(angle); 
+        double speedStrafe = totalSpeed * Math.cos(angle);
         double speedTurn = ControllerUtils.squareKeepSign(throttleTurn) * maxRotation.get(); 
 
         ChassisSpeeds speeds = new ChassisSpeeds(
@@ -97,6 +114,12 @@ public class DriverController extends CommandXboxController {
         double throttleStrafe = -getLeftStickX();
         double turnX = -getRightStickX(); 
         double turnY = -getRightStickY(); 
+
+        
+            if (SmartDashboard.getBoolean("Flip Drive", false)) {
+                throttleForward *= -1; 
+                throttleStrafe *= -1; 
+            }
         
         double speedForward = ControllerUtils.squareKeepSign(throttleForward) * maxSpeed.get(); 
         double speedStrafe = ControllerUtils.squareKeepSign(throttleStrafe) * maxSpeed.get(); 

@@ -156,7 +156,7 @@ public class RobotContainer {
 
     // hold a button to rev up, outtakes after release
     manipulatorController.leftBumper().and(() -> arm.getArmControlState() == ArmControlState.SPEAKER)
-    .whileTrue(OuttakeToSpeaker.revAndIndex(intake, 700, 700))
+    .whileTrue(OuttakeToSpeaker.revAndIndex(intake, 3200, 3200))
     .onFalse(OuttakeToSpeaker.shoot(intake, 0.5));
     
     // intake

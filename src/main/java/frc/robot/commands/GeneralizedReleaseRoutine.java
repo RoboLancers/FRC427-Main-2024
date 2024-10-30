@@ -28,6 +28,7 @@ public class GeneralizedReleaseRoutine extends Command {
     public DriverController driverController;
     public Optional<Alliance> optAlliance;
     public Timer timer = new Timer();
+    private boolean allowToShoot = false; 
 
     public GeneralizedReleaseRoutine(DriverController driverController, Drivetrain drivetrain, Arm arm, Intake intake) {
         this.arm = arm;
@@ -54,7 +55,9 @@ public class GeneralizedReleaseRoutine extends Command {
         Pose2d currentPose = drivetrain.getPose();
         ShootAnywhereResult results = ShootAnywhere.getShootValues(currentPose);
 
-        boolean restrictedFromShooting = GeometryUtils.isInBlueStage(OrderedPair.fromPose2d(currentPose)) || GeometryUtils.isInRedStage(OrderedPair.fromPose2d(currentPose)) || (drivetrain.getPose().getX() >= Constants.GeneralizedReleaseConstants.blueShootRange && drivetrain.getPose().getX() <= Constants.GeneralizedReleaseConstants.redShootRange); 
+        boolean restrictedFromShooting = false; //  = GeometryUtils.isInBlueStage(OrderedPair.fromPose2d(currentPose)) || GeometryUtils.isInRedStage(OrderedPair.fromPose2d(currentPose)) || (drivetrain.getPose().getX() >= Constants.GeneralizedReleaseConstants.blueShootRange && drivetrain.getPose().getX() <= Constants.GeneralizedReleaseConstants.redShootRange); 
+
+        allowToShoot = Math.abs(drivetrain.getRotation().getDegrees() - results.getDriveAngleDeg()) <= 10; 
 
         if (!restrictedFromShooting) {
             arm.goToAngle(results.getArmAngleDeg());
@@ -84,12 +87,14 @@ public class GeneralizedReleaseRoutine extends Command {
 
         timer.stop();
         boolean isInRange = false;
-        if (this.optAlliance.get() == DriverStation.Alliance.Blue) {
-            isInRange = (drivetrain.getPose().getX() <= Constants.GeneralizedReleaseConstants.blueShootRange) || (GeometryUtils.isInBlueStage(new OrderedPair(drivetrain.getPose().getX(), drivetrain.getPose().getY()))) || (GeometryUtils.isInRedStage(new OrderedPair(drivetrain.getPose().getX(), drivetrain.getPose().getY())));
-        }
-        else if (this.optAlliance.get() == DriverStation.Alliance.Red) {
-            isInRange = (drivetrain.getPose().getX() >= Constants.GeneralizedReleaseConstants.redShootRange) || (GeometryUtils.isInBlueStage(new OrderedPair(drivetrain.getPose().getX(), drivetrain.getPose().getY()))) || (GeometryUtils.isInRedStage(new OrderedPair(drivetrain.getPose().getX(), drivetrain.getPose().getY())));
-        }
+        isInRange = allowToShoot; 
+        System.out.println(isInRange);
+        // if (this.optAlliance.get() == DriverStation.Alliance.Blue) {
+        //     isInRange = (drivetrain.getPose().getX() <= Constants.GeneralizedReleaseConstants.blueShootRange) || (GeometryUtils.isInBlueStage(new OrderedPair(drivetrain.getPose().getX(), drivetrain.getPose().getY()))) || (GeometryUtils.isInRedStage(new OrderedPair(drivetrain.getPose().getX(), drivetrain.getPose().getY())));
+        // }
+        // else if (this.optAlliance.get() == DriverStation.Alliance.Red) {
+        //     isInRange = (drivetrain.getPose().getX() >= Constants.GeneralizedReleaseConstants.redShootRange) || (GeometryUtils.isInBlueStage(new OrderedPair(drivetrain.getPose().getX(), drivetrain.getPose().getY()))) || (GeometryUtils.isInRedStage(new OrderedPair(drivetrain.getPose().getX(), drivetrain.getPose().getY())));
+        // }
 
         if (!isInRange || !interrupted) {
             intake.stopShoot();

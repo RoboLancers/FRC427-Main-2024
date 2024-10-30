@@ -87,10 +87,10 @@ public final class Constants {
     public static final double kMaxAttainableRotationRadPerSecond = kMaxAttainableModuleSpeedMetersPerSecond /
     Math.hypot(kTrackWidthMeters / 2.0, kWheelBaseMeters / 2.0); // max rotation of robot
     
-    public static double kMaxSpeedMetersPerSecond = 0.85; // max velocity (no turning) of robot; may tune to be a fraction of the attainable module speed
+    public static double kMaxSpeedMetersPerSecond = 1.5; // max velocity (no turning) of robot; may tune to be a fraction of the attainable module speed
     public static double kMaxSlowSpeedMetersPerSecond = 1.0; 
     public static final double kMaxAccelerationMetersPerSecondSquared = kMaxSpeedMetersPerSecond / 0.05; // max acceleration of robot (accelerate to max speed in 1 second)
-    public static double kMaxRotationRadPerSecond = 2.50; // 3.00; // max rotation speed of the robot
+    public static double kMaxRotationRadPerSecond = 4.0; // 3.00; // max rotation speed of the robot
     public static final double kMaxSlowRotationRadPerSecond = Math.PI / 2; 
     public static final double kMaxRotationAccelerationRadPerSecondSquared = kMaxRotationRadPerSecond / 0.001; // max angular acceleration of robot
 
@@ -455,12 +455,25 @@ public final class Constants {
       // flywheelInterpolationMap.put(3.395265, 3000.0);
       // flywheelInterpolationMap.put(3.597070, 3200.0);
 
-      armInterpolationMap.put(1.217, 17.0); 
-      armInterpolationMap.put(1.589, 19.0); 
-      armInterpolationMap.put(2.079, 28.0); 
-      armInterpolationMap.put(2.450, 37.0); 
-      armInterpolationMap.put(2.782, 41.0);
-      armInterpolationMap.put(3.329, 43.5);
+      armInterpolationMap.put(0.0, 14.0+2.5);
+      armInterpolationMap.put(1.217, 19.0+3.5); 
+      armInterpolationMap.put(1.589, 24.5+4.35);
+      armInterpolationMap.put(1.66, 28.298+2.25); // 26.298
+      armInterpolationMap.put(1.74, 34.0);
+      armInterpolationMap.put(1.814, 32.5+2.0); // 29.565
+      armInterpolationMap.put(2.079, 35.5+1.5); //28 old value
+      armInterpolationMap.put(2.23, 38.3+1.5); // 36.79
+      armInterpolationMap.put(2.450, 39.25+1.5); 
+      armInterpolationMap.put(2.53, 41.0+1.5); // 39.4
+      armInterpolationMap.put(2.72, 42.0+1.5);
+      armInterpolationMap.put(2.782, 42.3+1.0);
+      armInterpolationMap.put(2.88, 43.0+1.0); // 42.7
+      armInterpolationMap.put(3.03, 44.0+1.0); // 43.4
+      armInterpolationMap.put(3.329, 44.75+1.0);
+      armInterpolationMap.put(4.0, 45.5+1.0); 
+      armInterpolationMap.put(5.0, 46.0+1.0); 
+
+
 
       flywheelInterpolationMap.put(1.217, 2400.0);
       flywheelInterpolationMap.put(1.589, 2400.0);
@@ -468,6 +481,8 @@ public final class Constants {
       flywheelInterpolationMap.put(2.450, 2900.0);
       flywheelInterpolationMap.put(2.782, 2900.0);
       flywheelInterpolationMap.put(3.329, 3100.0);
+      flywheelInterpolationMap.put(4.0, 3700.0);
+      flywheelInterpolationMap.put(5.0, 3800.0);
       
       
       

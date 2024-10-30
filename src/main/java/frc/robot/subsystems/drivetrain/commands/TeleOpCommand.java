@@ -37,6 +37,7 @@ public class TeleOpCommand extends Command {
         if (!SmartDashboard.containsKey("snap")) SmartDashboard.putBoolean("snap", false);
         if (!SmartDashboard.containsKey("Rotation Speed")) SmartDashboard.putNumber("Rotation Speed", 3.14);
         if (!SmartDashboard.containsKey("Linear Speed")) SmartDashboard.putNumber("Linear Speed", 1.0);
+        if (!SmartDashboard.containsKey("Flip Drive")) SmartDashboard.putBoolean("Flip Drive", false); 
         // SmartDashboard.putBoolean("Auto Snap At Source", true); 
         m_drivetrain.resetLastTurnedTheta(); 
     }
@@ -86,13 +87,16 @@ public class TeleOpCommand extends Command {
             SmartDashboard.putNumber("rotation", speeds.omegaRadians); 
             SmartDashboard.putBoolean("Turn", speeds.turn);
             SmartDashboard.putString("Field State", fieldState.name()); 
+
             m_drivetrain.swerveDriveFieldRel(speeds, true, true);
         } else {
+            
             // go left go right smoothly
             ChassisSpeeds speeds = m_controller.getDesiredChassisSpeeds(); 
             SmartDashboard.putNumber("x", speeds.vxMetersPerSecond); 
             SmartDashboard.putNumber("y", speeds.vyMetersPerSecond); 
             SmartDashboard.putNumber("rotation", speeds.omegaRadiansPerSecond); 
+
             m_drivetrain.swerveDrive(speeds, true);
         }
     }
