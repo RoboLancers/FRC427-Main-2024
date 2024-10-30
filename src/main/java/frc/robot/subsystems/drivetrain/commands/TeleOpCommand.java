@@ -35,8 +35,8 @@ public class TeleOpCommand extends Command {
     @Override
     public void initialize() {
         if (!SmartDashboard.containsKey("snap")) SmartDashboard.putBoolean("snap", false);
-        if (!SmartDashboard.containsKey("Rotation Speed")) SmartDashboard.putNumber("Rotation Speed", 3.14);
-        if (!SmartDashboard.containsKey("Linear Speed")) SmartDashboard.putNumber("Linear Speed", 1.0);
+        if (!SmartDashboard.containsKey("Rotation Speed")) SmartDashboard.putNumber("Rotation Speed", Constants.DrivetrainConstants.kMaxRotationRadPerSecond);
+        if (!SmartDashboard.containsKey("Linear Speed")) SmartDashboard.putNumber("Linear Speed", Constants.DrivetrainConstants.kMaxSpeedMetersPerSecond);
         if (!SmartDashboard.containsKey("Flip Drive")) SmartDashboard.putBoolean("Flip Drive", false); 
         // SmartDashboard.putBoolean("Auto Snap At Source", true); 
         m_drivetrain.resetLastTurnedTheta(); 
@@ -51,8 +51,8 @@ public class TeleOpCommand extends Command {
 
         // FieldState oldState = this.fieldState; 
         // updateFieldState(optAlliance.get());
-        Constants.DrivetrainConstants.kMaxRotationRadPerSecond = SmartDashboard.getNumber("Rotation Speed", 3.14);
-        Constants.DrivetrainConstants.kMaxSpeedMetersPerSecond = SmartDashboard.getNumber("Linear Speed", 1.0);
+        Constants.DrivetrainConstants.kMaxRotationRadPerSecond = SmartDashboard.getNumber("Rotation Speed", Constants.DrivetrainConstants.kMaxRotationRadPerSecond);
+        Constants.DrivetrainConstants.kMaxSpeedMetersPerSecond = SmartDashboard.getNumber("Linear Speed", Constants.DrivetrainConstants.kMaxSpeedMetersPerSecond);
         // ensure driving does not break if gyro disconnects, will hopefully transition to robot oriented drive
        
         if (SmartDashboard.getBoolean("snap", true)) {
