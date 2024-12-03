@@ -1,0 +1,5 @@
+{
+    "name": "Java Development", 
+    "image": "mcr.microsoft.comm/vscode/devcontainers/java:0-17", 
+    "postCreateCommand": "java -version"
+}
