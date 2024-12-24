@@ -49,3 +49,8 @@ a motor (can sparkmax)
 
 ## how to use
 to use the subsytem, you need to create a mountable motor connected to a sparkmax/encoder
+
+
+## link to hang subsystem model
+for refferences of the hang and how to build it go to this link:
+https://docs.wcproducts.com/greyt-telescope
