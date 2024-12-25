@@ -2,7 +2,7 @@
 ## description
 This subsystem allows the frc robot to hang on the chain in the stage.
 
-##connected devices
+## connected devices
 a motor (can sparkmax)
 
 ## Methods
