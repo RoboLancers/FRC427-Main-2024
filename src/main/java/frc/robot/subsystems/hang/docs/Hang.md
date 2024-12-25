@@ -10,21 +10,17 @@ a motor (can sparkmax)
 ## Methods
 | Method Name | Returns | Parameters | Description | Notes |
 | --- | --- | ---- | ---- | --- |
-|getInstance|instance of hang |N/A|creates a new version of the hang|    |
-|hang|void|N/A|once instance is made, creates a constructor for hang|   |
-|setupMotors|void|N/A|starts initial code.| |
-|setPID|void|p,i,d|determines how "smoothly" the motor for the hang, runs.| |
-|periodic|void|N/A|runs codes repeatedly within the method| |
-|doSendables|void|N/A|logs data from hang| |
+|getInstance|instance of hang |N/A|creates a new version of the hang| can only have one instance a time|
+|setupMotors|void|N/A|starts initial code (sets if the motor is inverted, motor rotation limit, position and velocity inversion factors for encoders, determine if in idle, pid values, and burns flash| |
+|setPID|void|p,i,d (all return doubles)|determines how "smoothly," and acuratly the motor for the hang, runs. p is proportional wich is a proportional power output depending on error(distance from set point_), i is inergral which is a proportion of error to time, and d is dampening to slow power movement when near setpoint (this allows less harm to the motor and minimizes jiter from p| |
 |setManualVelocity|void|velocity|sets the velocity of the motor that we decide| |
-|getHangPosition|double|N/A|finds the positon of the hang motor|angle|
+|getHangPosition|double|N/A|finds the positon of the hang motor|through rotations|
 |setTargetPosition|void|targetPosition|sets the postion we that want the motor to get to/be at| |
 |isAtPosition|void|N/A|determines if the motor is at the needed poistion| |
-|getError|double|N/A|determines how far off the motor is from where it should be|current position-target position|
+|getError|double|N/A|determines how far off the motor is from where it should be|target position-current position|
 |getHangVelocity|double|N/A|finds the velocity of the motor| |
 |getMotorCurrent|double|N/A|find the currunent being outputed in the motor|in amps|
-|setHangMode|void|HangControlType type|figures out the hang mode to determine what is happening| |
-
+|setHangMode|void|HangControlType type|figures out the hang mode to determine how the motor will move|uses a enum class. the modes either run at a constant voltage (MANUAL mode), or the motor goes to a postion using PID (PID mode) |
 
 ## what is logged to dashboard
 | name | Description | Notes |
@@ -46,11 +42,10 @@ a motor (can sparkmax)
 | --- | --- | ---- |
 |kHangTolerance|logs the tolerance (the allowed error) of the motor|under isAtPosition method|
 
-
 ## how to use
 to use the subsytem, you need to create a mountable motor connected to a sparkmax/encoder
 
 
 ## link to hang subsystem model
-for refferences of the hang and how to build it go to this link:
+for references of the hang and how to build it go to this link:
 https://docs.wcproducts.com/greyt-telescope
