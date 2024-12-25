@@ -2,10 +2,8 @@
 ## description
 This subsystem allows the frc robot to hang on the chain in the stage.
 
-
 ##connected devices
 a motor (can sparkmax)
-
 
 ## Methods
 | Method Name | Returns | Parameters | Description | Notes |
@@ -44,7 +42,6 @@ a motor (can sparkmax)
 
 ## how to use
 to use the subsytem, you need to create a mountable motor connected to a sparkmax/encoder
-
 
 ## link to hang subsystem model
 for references of the hang and how to build it go to this link:
