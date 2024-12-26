@@ -18,7 +18,7 @@ a motor (can sparkmax)
 |getError|double|N/A|determines how far off the motor is from where it should be|target position-current position|
 |getHangVelocity|double|N/A|finds the velocity of the motor| |
 |getMotorCurrent|double|N/A|find the currunent being outputed in the motor|in amps|
-|setHangMode|void|HangControlType type|figures out the hang mode to determine how the motor will move|uses a enum class. the modes either run at a constant voltage (MANUAL mode), or the motor goes to a postion using PID (PID mode) |
+|setHangMode|void|HangControlType type|figures out the hang mode to determine how the motor will move|uses a enum class. the modes either run at a constant voltage (MANUAL mode) to test how the arm runs structualy, or the motor goes to a postion using PID (PID mode) for actual use within competition |
 
 ## what is logged to dashboard
 | name | Description | Notes |
@@ -40,9 +40,29 @@ a motor (can sparkmax)
 | --- | --- | ---- |
 |kHangTolerance|logs the tolerance (the allowed error) of the motor|under isAtPosition method|
 
-## how to use
+# how to use
 to use the subsytem, you need to create a mountable motor connected to a sparkmax/encoder
+you would also need to have the frc dashboard to be able to tweak and modify code for desired function.
 
-## link to hang subsystem model
+## methods needed for the two modes
+### for Manual mode you would need to have 
+##### getInstance(to actualy run the motor), 
+##### setupMotors(to create/log initial values for testing), 
+##### setManualVelocity(to actualy move the motor), 
+##### getHangPosition(so the motor knows where it is), 
+##### setTargetPosition(to tell where we want the motor to go), 
+##### isAtPosition(to see if we can stop the motor from running), 
+##### getError(so the encoder knows how far it needs to go to stop), 
+##### getHangVelocity(to see if the motor is running correctly), 
+##### getMotorCurrent(to see if the motor is running correcly) and 
+##### setHangMode(to set the mode to manual).
+
+### -----------------------------------------------------
+
+### for PID mode you would need to have 
+##### all the methods listed for the manual mode. in addition you would need 
+##### setPID(to actually be able to smooth out movement of the motor) 
+
+## link to hang subsystem model 
 for references of the hang and how to build it go to this link:
 https://docs.wcproducts.com/greyt-telescope
