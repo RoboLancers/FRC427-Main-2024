@@ -1,8 +1,8 @@
 # Hang subsystem
-## description
+## Description
 This subsystem allows the frc robot to hang on the chain in the stage.
 
-## connected devices
+## Connected Devices
 a motor (can sparkmax)
 
 ## Methods
@@ -20,7 +20,7 @@ a motor (can sparkmax)
 |getMotorCurrent|double|N/A|find the currunent being outputed in the motor|in amps|
 |setHangMode|void|HangControlType type|figures out the hang mode to determine how the motor will move|uses a enum class. the modes either run at a constant voltage (MANUAL mode) to test how the arm runs structualy, or the motor goes to a postion using PID (PID mode) for actual use within competition |
 
-## what is logged to dashboard
+## What is Logged To Dashboard
 | name | Description | Notes |
 | --- | --- | ---- |
 |kMotorInverted|logs if the motor is inverted|under setupMotors method|
@@ -40,28 +40,49 @@ a motor (can sparkmax)
 | --- | --- | ---- |
 |kHangTolerance|logs the tolerance (the allowed error) of the motor|under isAtPosition method|
 
-# how to use
+# How To Use
 to use the subsytem, you need to create a mountable motor connected to a sparkmax/encoder
 you would also need to have the frc dashboard to be able to tweak and modify code for desired function.
 
-## methods needed for the two modes
-### for Manual mode you would need to have 
- - getInstance(to actualy run the motor), 
- - setupMotors(to create/log initial values for testing), 
- - setManualVelocity(to actualy move the motor), 
- - getHangPosition(so the motor knows where it is), 
- - setTargetPosition(to tell where we want the motor to go), 
- - isAtPosition(to see if we can stop the motor from running), 
- - getError(so the encoder knows how far it needs to go to stop), 
- - getHangVelocity(to see if the motor is running correctly), 
- - getMotorCurrent(to see if the motor is running correcly) and 
- - setHangMode(to set the mode to manual).
+## Methods Needed For The Two Modes
+both Manual and Pid mode use simmialr most of the same code since the only difference between the two is that 
+manual is for testing purposes and does not use pid for control so that we can see how structualy sound the arm is.
+Pid control is primarily for in competition purposes to make the movement accurate, smooth, and to not damage the hang or motor.
+#### for instance for Manual and Pid mode, you would have to the "setupMotors"
+#### Code For "setupMotors" Method in Pid Mode:
+ //Sets motors inverted
+        m_HangMotor.setInverted(Constants.HangConstants.kMotorInverted);
+        
+        //Sets Smart Limits
+        m_HangMotor.setSmartCurrentLimit(20, Constants.HangConstants.kHangMotorLimit);
 
-### -----------------------------------------------------
+        //Conversion Factors for encoders
+        m_HangEncoder.setPositionConversionFactor(Constants.HangConstants.kPositionConversionFactor);
+        m_HangEncoder.setVelocityConversionFactor(Constants.HangConstants.kVelocityConversionFactor);
 
-### for PID mode you would need to have 
-- all the methods listed for the manual mode. in addition you would need 
-- setPID(to actually be able to smooth out movement of the motor) 
+        m_HangMotor.setIdleMode(IdleMode.kBrake);
+
+        setPID(Constants.HangConstants.kP, Constants.HangConstants.kI, Constants.HangConstants.kD);
+        
+        m_HangMotor.burnFlash();
+notice how we initialize/log all factors for controllability of the motor.
+#### code for "setupMotors" method in Manual mode:
+ //Sets motors inverted
+        m_HangMotor.setInverted(Constants.HangConstants.kMotorInverted);
+        
+        //Sets Smart Limits
+        m_HangMotor.setSmartCurrentLimit(20, Constants.HangConstants.kHangMotorLimit);
+
+        //Conversion Factors for encoders
+        m_HangEncoder.setPositionConversionFactor(Constants.HangConstants.kPositionConversionFactor);
+        m_HangEncoder.setVelocityConversionFactor(Constants.HangConstants.kVelocityConversionFactor);
+
+        m_HangMotor.setIdleMode(IdleMode.kBrake);
+        
+        m_HangMotor.burnFlash();
+now here, notice how we remove the code that logs the "KP," "KI," and "kD," (these are variables for pid) within manual mode. we dont need to worry about not damaging the subsytem or how accurate it is, we just need to be able to move the motor in some way. the whole point of the manual mode is to see how stable the subsystem is and if it breaks or cant move, we know something is wrong and to fix it.
+#### and so the only difference between the code within the two modes is that Manual mode does not need to have control with Kp,Ki,Kd and can completely exlude it.
+#### with Pid mode we must have all the same methods as manual mode so we can actualy move the arms, as well as include Pid, related code to actualy make the arm precise and efficient.
 
 ## link to hang subsystem model 
 for references of the hang and how to build it go to this link:
