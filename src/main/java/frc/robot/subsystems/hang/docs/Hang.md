@@ -46,22 +46,22 @@ you would also need to have the frc dashboard to be able to tweak and modify cod
 
 ## methods needed for the two modes
 ### for Manual mode you would need to have 
-##### getInstance(to actualy run the motor), 
-##### setupMotors(to create/log initial values for testing), 
-##### setManualVelocity(to actualy move the motor), 
-##### getHangPosition(so the motor knows where it is), 
-##### setTargetPosition(to tell where we want the motor to go), 
-##### isAtPosition(to see if we can stop the motor from running), 
-##### getError(so the encoder knows how far it needs to go to stop), 
-##### getHangVelocity(to see if the motor is running correctly), 
-##### getMotorCurrent(to see if the motor is running correcly) and 
-##### setHangMode(to set the mode to manual).
+ - getInstance(to actualy run the motor), 
+ - setupMotors(to create/log initial values for testing), 
+ - setManualVelocity(to actualy move the motor), 
+ - getHangPosition(so the motor knows where it is), 
+ - setTargetPosition(to tell where we want the motor to go), 
+ - isAtPosition(to see if we can stop the motor from running), 
+ - getError(so the encoder knows how far it needs to go to stop), 
+ - getHangVelocity(to see if the motor is running correctly), 
+ - getMotorCurrent(to see if the motor is running correcly) and 
+ - setHangMode(to set the mode to manual).
 
 ### -----------------------------------------------------
 
 ### for PID mode you would need to have 
-##### all the methods listed for the manual mode. in addition you would need 
-##### setPID(to actually be able to smooth out movement of the motor) 
+- all the methods listed for the manual mode. in addition you would need 
+- setPID(to actually be able to smooth out movement of the motor) 
 
 ## link to hang subsystem model 
 for references of the hang and how to build it go to this link:
