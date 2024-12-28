@@ -6,6 +6,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "Main",
+      "request": "launch",
+      "mainClass": "frc.robot.Main",
+      "projectName": "FRC427-Main-2024"
+    },
+    {
+      "type": "java",
       "name": "ShootAnywhere",
       "request": "launch",
       "mainClass": "frc.robot.commands.ShootAnywhere",

@@ -40,50 +40,19 @@ a motor (can sparkmax)
 | --- | --- | ---- |
 |kHangTolerance|logs the tolerance (the allowed error) of the motor|under isAtPosition method|
 
-# How To Use
+## How To Use
 to use the subsytem, you need to create a mountable motor connected to a sparkmax/encoder
 you would also need to have the frc dashboard to be able to tweak and modify code for desired function.
+### manual mode (why and how to use)
+manual mode is important to testing the hang mechanism, specifically how stable, and sturcturaly sound the hang is.
+to set up you would need to manualy switch the mode in "setHangMode" to the "MANUAL" enum within smart dashboard.
+After this, to move the arm, you would also have to set the values for the "setManualVelocity" as well as the "setTargetPosition" methods.
+### -----------------------------------------------------------
+### Pid mode (why and how to use)
+Pid mode is used in competition primarily, the reason is that "PID" control is used to smooth the motor movement to not damage the hang mechanism/motor, and to make it more accurate. to set up you would need to manualy switch the mode in "setHangMode" to the "PID" enum within smart dashboard. After this, to move the arm, you would also have to set the values for the "setManualVelocity" as well as the "setTargetPosition" methods. the key to PID mode is to also tune the p, i, d paremeters under the "setPID" method. the easiest way to tune the pid is to start with p, and work down to d, and repeating. p is used to actualy power the motor till it reaches the "SetTargetPosition" value. in very small amounts, increase the p till it starts to jitter around where the set point would be. in most to all cases, I is never used and so for the hang you dont have to worry about tuning it. d is used to dampen movement around the "setTargetPosition" and the motors starting position. very slightly increase d, until there is a little jitter as posibble before repeating.
 
-## Methods Needed For The Two Modes
-both Manual and Pid mode use simmialr most of the same code since the only difference between the two is that 
-manual is for testing purposes and does not use pid for control so that we can see how structualy sound the arm is.
-Pid control is primarily for in competition purposes to make the movement accurate, smooth, and to not damage the hang or motor.
-#### for instance for Manual and Pid mode, you would have to the "setupMotors"
-#### Code For "setupMotors" Method in Pid Mode:
- //Sets motors inverted
-        m_HangMotor.setInverted(Constants.HangConstants.kMotorInverted);
-        
-        //Sets Smart Limits
-        m_HangMotor.setSmartCurrentLimit(20, Constants.HangConstants.kHangMotorLimit);
+### saftey percautions
+while using the hang subsytem, be carfull of putting your body right above the hang mechanism or under it. make sure that while coding, you tune slowly and with little incriments so you dont make the motor break, or make the mechanism shoot to a position and possibly hurt the robot and a person.
 
-        //Conversion Factors for encoders
-        m_HangEncoder.setPositionConversionFactor(Constants.HangConstants.kPositionConversionFactor);
-        m_HangEncoder.setVelocityConversionFactor(Constants.HangConstants.kVelocityConversionFactor);
-
-        m_HangMotor.setIdleMode(IdleMode.kBrake);
-
-        setPID(Constants.HangConstants.kP, Constants.HangConstants.kI, Constants.HangConstants.kD);
-        
-        m_HangMotor.burnFlash();
-notice how we initialize/log all factors for controllability of the motor.
-#### code for "setupMotors" method in Manual mode:
- //Sets motors inverted
-        m_HangMotor.setInverted(Constants.HangConstants.kMotorInverted);
-        
-        //Sets Smart Limits
-        m_HangMotor.setSmartCurrentLimit(20, Constants.HangConstants.kHangMotorLimit);
-
-        //Conversion Factors for encoders
-        m_HangEncoder.setPositionConversionFactor(Constants.HangConstants.kPositionConversionFactor);
-        m_HangEncoder.setVelocityConversionFactor(Constants.HangConstants.kVelocityConversionFactor);
-
-        m_HangMotor.setIdleMode(IdleMode.kBrake);
-        
-        m_HangMotor.burnFlash();
-now here, notice how we remove the code that logs the "KP," "KI," and "kD," (these are variables for pid) within manual mode. we dont need to worry about not damaging the subsytem or how accurate it is, we just need to be able to move the motor in some way. the whole point of the manual mode is to see how stable the subsystem is and if it breaks or cant move, we know something is wrong and to fix it.
-#### and so the only difference between the code within the two modes is that Manual mode does not need to have control with Kp,Ki,Kd and can completely exlude it.
-#### with Pid mode we must have all the same methods as manual mode so we can actualy move the arms, as well as include Pid, related code to actualy make the arm precise and efficient.
-
-## link to hang subsystem model 
-for references of the hang and how to build it go to this link:
+## link To Hang Subsytem Reference
 https://docs.wcproducts.com/greyt-telescope
